@@ -13,7 +13,6 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.html",
-      filename: "index.html",
     }),
   ],
   module: {
@@ -26,8 +25,12 @@ module.exports = {
         test: /\.(png|jpe?g|gif)$/i,
         type: "asset/resource",
         generator: {
-          filename: "assets/[name][ext]",
+          filename: "assets/[name][hash][ext]",
         },
+      },
+      {
+        test: /\.html$/,
+        loader: "html-loader",
       },
     ],
   },
