@@ -1,5 +1,3 @@
-import logo from "../assets/logo.png";
-
 export default class Projects {
   constructor() {
     this.projects = [];
@@ -18,9 +16,3 @@ export default class Projects {
     }
   }
 }
-export const examp = () => {
-  const dom = document.getElementById("container");
-  const imagess = document.createElement("img");
-  imagess.src = "./assets/logo.png";
-  dom.append(imagess);
-};
