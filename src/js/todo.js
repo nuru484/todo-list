@@ -31,31 +31,4 @@ export class TodoList {
     this.todosForProjects.push(todo);
     return todo;
   }
-
-  removeTodo(todo) {
-    const inboxIndex = this.todosForInbox.indexOf(todo);
-    const projectsIndex = this.todosForProjects.indexOf(todo);
-    if (inboxIndex !== -1) {
-      this.todosForInbox.splice(inboxIndex, 1);
-    }
-    if (projectsIndex !== -1) {
-      this.todosForProjects.splice(projectsIndex, 1);
-    }
-  }
 }
-
-const todoList = new TodoList();
-
-const todoForInbox1 = todoList.createTodoForInbox(
-  "Wash",
-  "To wash the clothes",
-  new Date(),
-  "High"
-);
-
-const todoForProjects1 = todoList.createTodoForProjects(
-  "Clean",
-  "To Clean the clothes",
-  new Date(),
-  "Important"
-);
