@@ -1,24 +1,33 @@
+// Imports the other modules of the project
 import { Todo, TodoList } from "./todo";
 
+// Create an in of the TodoList class in the todo.js module
 const todoList = new TodoList();
 
+// A function to grab the value of the properties of a todo
 const todoProperty = () => {
   const title = document.getElementById("title");
   const description = document.getElementById("description");
   const dueDate = document.getElementById("date");
   const priority = document.getElementById("priority");
 
+  // Returns the value of title and all the properties
   return { title, description, dueDate, priority };
 };
 
+// Creates a todo by calling the todoList.createTodoForInbox method to create todos for the inbox
 const createTodo = () => {
+  // Store the returned values of the todoProperty function
   const todoProperties = todoProperty();
+
   const aTodo = todoList.createTodoForInbox(
     todoProperties.title.value,
     todoProperties.description.value,
     todoProperties.dueDate.value,
     todoProperties.priority.value
   );
+
+  // Runs the todosFunction everytime a new todo is created
   todosFunction();
 
   return aTodo;
@@ -59,14 +68,14 @@ const showUpdateTaskButton = () => {
   updateTaskButton.style.display = "block";
 };
 
-//
-
-const addTodoButton = document.getElementById("add-todo-button");
+//Brings up the form to add a  todo
+export const addTodoButton = document.getElementById("add-todo-button");
 addTodoButton.addEventListener("click", (event) => {
   showAddTaskButton();
   showForm(event);
 });
 
+// Stops the propagation of the showform function within the form, so clicking on the form will not dissappear it
 const form = document.getElementById("my-form");
 form.addEventListener("click", (event) => {
   event.stopPropagation();
@@ -79,6 +88,7 @@ const toggleForm = () => {
     isFormVisible = false;
   }
 };
+// Toggles the form visibility when you click on this container, which covers the whole screen, except only on parts of the form
 const todoDetailsFormContainer = document.getElementById("my-form-container");
 todoDetailsFormContainer.addEventListener("click", () => {
   toggleForm();
@@ -262,12 +272,13 @@ const todayTodos = () => {
     }
   });
 };
-
+// Calls the todayTodos function when the today tab is active
 const todayTodoContainer = document.getElementById("today-container");
 todayTodoContainer.addEventListener("click", () => {
   todayTodos();
 });
 
+// Calls the todosFunction when the inbox tab is active
 const inboxTodoContainer = document.getElementById("inbox-container");
 inboxTodoContainer.addEventListener("click", () => {
   todosFunction();
