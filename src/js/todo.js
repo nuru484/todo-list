@@ -1,9 +1,10 @@
 export class Todo {
-  constructor(title, description, dueDate, priority) {
+  constructor(title, description, dueDate, priority, project) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
+    this.project = project;
   }
 
   updateProperties(newTitle, newDescription, newDueDate, newPriority) {
@@ -16,28 +17,12 @@ export class Todo {
 
 export class TodoList {
   constructor() {
-    this.todosForInbox = [];
+    this.todos = [];
   }
 
-  createTodoForInbox(title, description, dueDate, priority) {
-    const todo = new Todo(title, description, dueDate, priority);
-    this.todosForInbox.push(todo);
+  createTodo(title, description, dueDate, priority, project) {
+    const todo = new Todo(title, description, dueDate, priority, project);
+    this.todos.push(todo);
     return todo;
   }
-}
-
-export function createDynamicClassForProject() {
-  class DynamicClassForProject {
-    constructor() {
-      this.todosForProject = [];
-    }
-
-    createTodoForProject(data) {
-      const newObj = { data };
-      this.dynamicArray.push(newObj);
-      console.log("Object added to dynamicArray:", newObj);
-    }
-  }
-
-  return DynamicClassForProject;
 }

@@ -1,5 +1,5 @@
 // Imports the other modules of the project
-import { Todo, TodoList } from "./todo";
+import { createDynamicClassForProject, TodoList } from "./todo";
 
 // Create an in of the TodoList class in the todo.js module
 const todoList = new TodoList();
@@ -15,20 +15,26 @@ const todoProperty = () => {
   return { title, description, dueDate, priority };
 };
 
+let currentProject = "Inbox";
+
 // Creates a todo by calling the todoList.createTodoForInbox method to create todos for the inbox
-const createTodo = () => {
-  // Store the returned values of the todoProperty function
+const createTodo = (currentProject) => {
   const todoProperties = todoProperty();
 
-  const aTodo = todoList.createTodoForInbox(
-    todoProperties.title.value,
-    todoProperties.description.value,
-    todoProperties.dueDate.value,
-    todoProperties.priority.value
-  );
+  if (currentProject === "Inbox") {
+    todoList.createTodo(
+      todoProperties.title.value,
+      todoProperties.description.value,
+      todoProperties.dueDate.value,
+      todoProperties.priority.value,
+      currentProject
+    );
 
-  // Runs the todosFunction everytime a new todo is created
-  todosFunction();
+    // Runs the todosFunction everytime a new todo is created
+    todosFunction();
+  } else {
+    // Handle project-specific todos if needed
+  }
 };
 
 let isFormVisible = false;
@@ -107,12 +113,12 @@ const todosFunction = () => {
   inboxHeading.textContent = "Inbox";
   activeContainer.append(inboxHeading);
 
-  todoList.todosForInbox.forEach((value, index, array) => {
+  todoList.todos.forEach((value, index, array) => {
     const todoContainer = document.createElement("div"); // Container for each todo
     todoContainer.classList.add("todo-container"); //  class for styling if needed
 
     const todoTitle = document.createElement("p");
-    todoTitle.append(todoList.todosForInbox[index].title);
+    todoTitle.append(todoList.todos[index].title);
     todoTitle.addEventListener("click", (event) => {
       toggleTodoDetails(event, index);
     });
@@ -137,7 +143,7 @@ const todosFunction = () => {
         .addEventListener("click", (event) => {
           event.preventDefault();
 
-          todoList.todosForInbox[index].updateProperties(
+          todoList.todos[index].updateProperties(
             todoPropertiesUpdate.title.value,
             todoPropertiesUpdate.description.value,
             todoPropertiesUpdate.dueDate.value,
@@ -157,7 +163,7 @@ const todosFunction = () => {
 
 document.getElementById("submit").addEventListener("click", (event) => {
   event.preventDefault();
-  createTodo();
+  createTodo(currentProject);
   form.reset();
   toggleForm();
 });
@@ -180,16 +186,16 @@ const toggleTodoDetails = (event, index) => {
     todoDetailContainer.id = `todo-detail-${index}`; // Use an id to identify the container
 
     const todoTitle = document.createElement("p");
-    todoTitle.append(todoList.todosForInbox[index].title);
+    todoTitle.append(todoList.todos[index].title);
 
     const todoDescription = document.createElement("p");
-    todoDescription.append(todoList.todosForInbox[index].description);
+    todoDescription.append(todoList.todos[index].description);
 
     const todoDuedate = document.createElement("p");
-    todoDuedate.append(todoList.todosForInbox[index].dueDate);
+    todoDuedate.append(todoList.todos[index].dueDate);
 
     const todoPriority = document.createElement("p");
-    todoPriority.append(todoList.todosForInbox[index].priority);
+    todoPriority.append(todoList.todos[index].priority);
 
     todoDetailContainer.append(
       todoTitle,
@@ -239,7 +245,6 @@ const todayTodos = () => {
       deleteTodo.addEventListener("click", () => {
         array.splice(index, 1);
         todoContainer.remove();
-        console.log(todoList.todosForInbox);
       });
 
       const updateTodo = document.createElement("p");
@@ -255,7 +260,7 @@ const todayTodos = () => {
           .addEventListener("click", (event) => {
             event.preventDefault();
 
-            todoList.todosForInbox[index].updateProperties(
+            todoList.todos[index].updateProperties(
               todoPropertiesUpdate.title.value,
               todoPropertiesUpdate.description.value,
               todoPropertiesUpdate.dueDate.value,
@@ -274,6 +279,7 @@ const todayTodos = () => {
 // Calls the todayTodos function when the today tab is active
 const todayTodoContainer = document.getElementById("today-container");
 todayTodoContainer.addEventListener("click", () => {
+  currentProject = "Inbox";
   todayTodos();
 });
 
@@ -282,3 +288,57 @@ const inboxTodoContainer = document.getElementById("inbox-container");
 inboxTodoContainer.addEventListener("click", () => {
   todosFunction();
 });
+
+//starts here for projects
+
+const projectsContainer = document.getElementById("projects-container");
+
+const addProjectButton = document.getElementById("add-project");
+addProjectButton.addEventListener("click", () => {
+  const projectName = prompt(`Enter the project name:`);
+
+  if (projectName) {
+    const newProjectContainer = document.createElement("div");
+    newProjectContainer.classList.add("project-container");
+
+    const newProjectName = document.createElement("p");
+    newProjectName.textContent = projectName;
+
+    // Add event listener to display todos when the project is clicked
+    newProjectContainer.addEventListener("click", () => {
+      currentProject = projectName;
+
+      projectTodos(projectName);
+    });
+
+    const deleteProject = document.createElement("p");
+    deleteProject.textContent = "X";
+
+    const newProject = document.createElement("div");
+    newProject.id = projectName;
+    const mainContent = document.getElementById("main-content");
+    mainContent.append(newProject);
+
+    newProjectContainer.append(newProjectName, deleteProject);
+    projectsContainer.append(newProjectContainer);
+  }
+});
+
+const projectTodos = (projectName) => {
+  const activeContainer = document.getElementById("active-container");
+  activeContainer.innerHTML = "";
+
+  const projectHeading = document.createElement("p");
+  projectHeading.id = "project-todos-heading";
+  projectHeading.textContent = projectName;
+  activeContainer.append(projectHeading);
+
+  // Filter todos based on the selected project
+  const projectTodos = todoList.todos.filter(
+    (todo) => todo.project === projectName
+  );
+
+  projectTodos.forEach((todo, index) => {
+    // Display project-specific todos as needed
+  });
+};
