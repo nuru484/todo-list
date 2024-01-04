@@ -17,7 +17,6 @@ export class Todo {
 export class TodoList {
   constructor() {
     this.todosForInbox = [];
-    this.projects = [];
   }
 
   createTodoForInbox(title, description, dueDate, priority) {
@@ -25,39 +24,20 @@ export class TodoList {
     this.todosForInbox.push(todo);
     return todo;
   }
+}
 
-  createProject(projectName) {
-    const project = { name: projectName, todos: [] };
-    this.projects.push(project);
-    return project;
-  }
+export function createDynamicClassForProject() {
+  class DynamicClassForProject {
+    constructor() {
+      this.todosForProject = [];
+    }
 
-  createTodoForProject(projectName, title, description, dueDate, priority) {
-    // Find the project by name
-    const project = this.projects.find(
-      (project) => project.name === projectName
-    );
-
-    if (project) {
-      // If the project exists, create a todo for it
-      const todo = new Todo(title, description, dueDate, priority);
-      project.todos.push(todo);
-      return todo;
-    } else {
-      // If the project doesn't exist, you may choose to handle this case accordingly
-      console.error(`Project with name '${projectName}' not found.`);
-      return null;
+    createTodoForProject(data) {
+      const newObj = { data };
+      this.dynamicArray.push(newObj);
+      console.log("Object added to dynamicArray:", newObj);
     }
   }
-  removeProject(projectName) {
-    // Find the index of the project by name
-    const projectIndex = this.projects.findIndex(
-      (project) => project.name === projectName
-    );
 
-    if (projectIndex !== -1) {
-      // If the project exists, remove it from the projects array
-      this.projects.splice(projectIndex, 1);
-    }
-  }
+  return DynamicClassForProject;
 }

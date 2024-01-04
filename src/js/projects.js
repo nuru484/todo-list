@@ -1,14 +1,8 @@
-import { TodoList } from "./todo";
-
-const todoList = new TodoList();
-
 const projectsContainer = document.getElementById("projects-container");
 
 const addProjectButton = document.getElementById("add-project");
 addProjectButton.addEventListener("click", () => {
   const projectName = prompt(`Enter the project name:`);
-
-  todoList.createProject(projectName);
 
   if (projectName) {
     const newProjectContainer = document.createElement("div");
@@ -25,10 +19,10 @@ addProjectButton.addEventListener("click", () => {
     const deleteProject = document.createElement("p");
     deleteProject.textContent = "X";
 
-    // Add event listener to remove the project when 'X' is clicked
-    deleteProject.addEventListener("click", () => {
-      removeProject(projectName);
-    });
+    const newProject = document.createElement("div");
+    newProject.id = projectName;
+    const mainContent = document.getElementById("main-content");
+    mainContent.append(newProject);
 
     newProjectContainer.append(newProjectName, deleteProject);
     projectsContainer.append(newProjectContainer);
@@ -43,9 +37,4 @@ const projectTodos = (projectName) => {
   projectHeading.id = "project-todos-heading";
   projectHeading.textContent = projectName;
   activeContainer.append(projectHeading);
-};
-
-const removeProject = (projectName) => {
-  // Remove the project from the TodoList
-  todoList.removeProject(projectName);
 };

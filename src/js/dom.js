@@ -95,10 +95,12 @@ todoDetailsFormContainer.addEventListener("click", () => {
 const todosFunction = () => {
   const activeContainer = document.getElementById("active-container");
   const todosInInbox = document.getElementById("todos-in-inbox");
+  const todoInToday = document.getElementById("todos-in-today");
 
   // Clear existing content in activeContainer
   activeContainer.innerHTML = "";
   todosInInbox.innerHTML = "";
+  todoInToday.innerHTML = "";
 
   const inboxHeading = document.createElement("p");
   inboxHeading.id = "inbox-todos-heading";
@@ -203,9 +205,13 @@ const toggleTodoDetails = (event, index) => {
 
 const todayTodos = () => {
   const activeContainer = document.getElementById("active-container");
+  const todoInToday = document.getElementById("todos-in-today");
+  const todosInInbox = document.getElementById("todos-in-inbox");
 
   // Clear existing content in activeContainer
   activeContainer.innerHTML = "";
+  todoInToday.innerHTML = "";
+  todosInInbox.innerHTML = "";
 
   const todayHeading = document.createElement("p");
   todayHeading.id = "today-todos-heading";
@@ -261,7 +267,7 @@ const todayTodos = () => {
       });
 
       todoContainer.append(todoTitle, deleteTodo, updateTodo);
-      activeContainer.append(todoContainer);
+      todoInToday.append(todoContainer);
     }
   });
 };
