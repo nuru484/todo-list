@@ -29,14 +29,12 @@ const createTodo = () => {
 
   // Runs the todosFunction everytime a new todo is created
   todosFunction();
-
-  return aTodo;
 };
 
 let isFormVisible = false;
 
 // function to toggle the
-const showForm = () => {
+export const showForm = () => {
   isFormVisible = !isFormVisible;
 
   if (isFormVisible) {
@@ -69,19 +67,19 @@ const showUpdateTaskButton = () => {
 };
 
 //Brings up the form to add a  todo
-export const addTodoButton = document.getElementById("add-todo-button");
+const addTodoButton = document.getElementById("add-todo-button");
 addTodoButton.addEventListener("click", (event) => {
   showAddTaskButton();
   showForm(event);
 });
 
 // Stops the propagation of the showform function within the form, so clicking on the form will not dissappear it
-const form = document.getElementById("my-form");
+export const form = document.getElementById("my-form");
 form.addEventListener("click", (event) => {
   event.stopPropagation();
 });
 
-const toggleForm = () => {
+export const toggleForm = () => {
   if (isFormVisible) {
     todoDetailsFormContainer.classList.remove("todo-form-show");
     todoDetailsFormContainer.classList.add("todo-form-container");
@@ -96,18 +94,20 @@ todoDetailsFormContainer.addEventListener("click", () => {
 
 const todosFunction = () => {
   const activeContainer = document.getElementById("active-container");
+  const todosInInbox = document.getElementById("todos-in-inbox");
 
   // Clear existing content in activeContainer
   activeContainer.innerHTML = "";
+  todosInInbox.innerHTML = "";
 
   const inboxHeading = document.createElement("p");
   inboxHeading.id = "inbox-todos-heading";
   inboxHeading.textContent = "Inbox";
-  activeContainer.append(inboxHeading, addTodoButton);
+  activeContainer.append(inboxHeading);
 
   todoList.todosForInbox.forEach((value, index, array) => {
     const todoContainer = document.createElement("div"); // Container for each todo
-    todoContainer.classList.add("todo-container"); // Add a class for styling if needed
+    todoContainer.classList.add("todo-container"); //  class for styling if needed
 
     const todoTitle = document.createElement("p");
     todoTitle.append(todoList.todosForInbox[index].title);
@@ -120,7 +120,6 @@ const todosFunction = () => {
     deleteTodo.addEventListener("click", () => {
       array.splice(index, 1);
       todoContainer.remove(); // Remove the todo container from the DOM
-      console.log(todoList.todosForInbox);
     });
 
     const updateTodo = document.createElement("p");
@@ -148,12 +147,21 @@ const todosFunction = () => {
     });
 
     todoContainer.append(todoTitle, deleteTodo, updateTodo);
-    activeContainer.append(todoContainer);
+    todosInInbox.append(todoContainer);
   });
 };
 
+// submit button when the add task button is clicked
+
+document.getElementById("submit").addEventListener("click", (event) => {
+  event.preventDefault();
+  createTodo();
+  form.reset();
+  toggleForm();
+});
+
 const toggleTodoDetails = (event, index) => {
-  const activeContainer = document.getElementById("active-container");
+  const todoContainer = event.currentTarget.parentElement;
 
   // Find the existing detail container for the clicked todo
   const existingDetailContainer = document.getElementById(
@@ -164,7 +172,7 @@ const toggleTodoDetails = (event, index) => {
     // If the container exists, remove it to hide the details
     existingDetailContainer.remove();
   } else {
-    // If the container doesn't exist, create and append it after the clicked todo title
+    // If the container doesn't exist, create and append it inside the todo container
     const todoDetailContainer = document.createElement("div");
     todoDetailContainer.classList.add("todo-detail-container");
     todoDetailContainer.id = `todo-detail-${index}`; // Use an id to identify the container
@@ -188,25 +196,10 @@ const toggleTodoDetails = (event, index) => {
       todoPriority
     );
 
-    // Find the index of the clicked todo title and insert the details container after it
-    const clickedTodoIndex = Array.from(activeContainer.children).indexOf(
-      event.currentTarget.parentElement
-    );
-    activeContainer.insertBefore(
-      todoDetailContainer,
-      activeContainer.children[clickedTodoIndex + 1]
-    );
+    // Append the details container inside the todo container
+    todoContainer.appendChild(todoDetailContainer);
   }
 };
-
-// submit button when the add task button is clicked
-
-document.getElementById("submit").addEventListener("click", (event) => {
-  event.preventDefault();
-  createTodo();
-  form.reset();
-  toggleForm();
-});
 
 const todayTodos = () => {
   const activeContainer = document.getElementById("active-container");

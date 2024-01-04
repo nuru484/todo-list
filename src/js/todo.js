@@ -25,6 +25,7 @@ export class TodoList {
     this.todosForInbox.push(todo);
     return todo;
   }
+
   createProject(projectName) {
     const project = { name: projectName, todos: [] };
     this.projects.push(project);
@@ -46,6 +47,17 @@ export class TodoList {
       // If the project doesn't exist, you may choose to handle this case accordingly
       console.error(`Project with name '${projectName}' not found.`);
       return null;
+    }
+  }
+  removeProject(projectName) {
+    // Find the index of the project by name
+    const projectIndex = this.projects.findIndex(
+      (project) => project.name === projectName
+    );
+
+    if (projectIndex !== -1) {
+      // If the project exists, remove it from the projects array
+      this.projects.splice(projectIndex, 1);
     }
   }
 }

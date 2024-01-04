@@ -3,8 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="assets/logo.png" />
+    <link rel="icon" href="/src/assets/logo.png" />
     <title>Todo List</title>
+    <style>
+      /* Add your styles here */
+    </style>
   </head>
   <body>
     <div id="container">
@@ -16,21 +19,25 @@
           <li id="logo-name">Todo List</li>
         </ul>
 
-        <div id="completed-tasks">Completed Tasks</div>
+        <div id="add-todo-button">
+          <img src="/src/assets/plus.png" alt="addition image" height="25px" />
+          Add Task
+        </div>
       </header>
+
       <nav id="nav-bar">
         <div id="mini-nav-links">
           <div class="nav-link">
             <div id="inbox-container">
               <p id="inbox">
-                <img src="/src/assets/inbox.png" width="25px" alt="" />Inbox
+                <img src="/src/assets/inbox.png" width="25px" alt="" /> Inbox
               </p>
             </div>
           </div>
           <div class="nav-link">
             <div id="today-container">
               <p id="today">
-                <img src="/src/assets/today.png" width="25px" alt="" />Today
+                <img src="/src/assets/today.png" width="25px" alt="" /> Today
               </p>
             </div>
           </div>
@@ -49,8 +56,9 @@
           </div>
         </div>
       </nav>
+
       <main id="main-content">
-        <did class="todo-form-container" id="my-form-container">
+        <div class="todo-form-container" id="my-form-container">
           <form class="todo-form" id="my-form">
             <!-- Title Input -->
             <label for="title">Title:</label>
@@ -82,22 +90,13 @@
             <input type="submit" value="Add Task" id="submit" />
             <input type="submit" value="Update Task" id="update-task" />
           </form>
-        </did>
-        <div id="active-container">
-          Inbox
-          <div id="add-todo-button">
-            <img
-              src="/src/assets/plus.png"
-              alt="addition image"
-              height="25px"
-            />
-            Add Task
-          </div>
         </div>
-        <div id="inbox-todos"></div>
-        <div id="today-dotos"></div>
-        <div id="projects-section"></div>
+        <div id="active-container">Inbox</div>
+        <div id="todos-in-inbox">Hello</div>
+        <div id="todos-in-today"></div>
+        <div id="todos-in-project"></div>
       </main>
+
       <footer>@Nurudeen Abdul-Majeed</footer>
     </div>
   </body>
