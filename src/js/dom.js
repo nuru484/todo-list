@@ -126,52 +126,55 @@ const todosFunction = () => {
   inboxHeading.textContent = "Inbox";
   activeContainer.append(inboxHeading);
 
-  const InboxTodos = todoList.todos.filter((todo) => todo.project === "Inbox");
+  for (let i = 0; i < todoList.todos.length; i++) {
+    const todo = todoList.todos[i];
 
-  InboxTodos.forEach((todo, index, array) => {
-    const todoContainer = document.createElement("div"); // Container for each todo
-    todoContainer.classList.add("todo-container"); //  class for styling if needed
+    if (todo.project === "Inbox") {
+      const todoContainer = document.createElement("div"); // Container for each todo
+      todoContainer.classList.add("todo-container"); //  class for styling if needed
 
-    const todoTitle = document.createElement("p");
-    todoTitle.append(todo.title);
-    todoTitle.addEventListener("click", (event) => {
-      toggleTodoDetails(event, index);
-    });
+      const todoTitle = document.createElement("p");
+      todoTitle.append(todo.title);
+      todoTitle.addEventListener("click", (event) => {
+        toggleTodoDetails(event, i);
+      });
 
-    const deleteTodo = document.createElement("p");
-    deleteTodo.textContent = "delete";
-    deleteTodo.addEventListener("click", () => {
-      array.splice(index, 1);
-      todoContainer.remove(); // Remove the todo container from the DOM
-    });
+      const deleteTodo = document.createElement("p");
+      deleteTodo.textContent = "delete";
+      deleteTodo.addEventListener("click", () => {
+        todoList.todos.splice(i, 1);
+        todoContainer.remove(); // Remove the todo container from the DOM
+        console.log(todoList.todos);
+      });
 
-    const updateTodo = document.createElement("p");
-    updateTodo.textContent = "update";
-    updateTodo.addEventListener("click", (event) => {
-      showUpdateTaskButton();
-      showForm(event);
+      const updateTodo = document.createElement("p");
+      updateTodo.textContent = "update";
+      updateTodo.addEventListener("click", (event) => {
+        showUpdateTaskButton();
+        showForm(event);
 
-      const todoPropertiesUpdate = todoProperty();
+        const todoPropertiesUpdate = todoProperty();
 
-      document
-        .getElementById("update-task")
-        .addEventListener("click", (event) => {
-          event.preventDefault();
+        document
+          .getElementById("update-task")
+          .addEventListener("click", (event) => {
+            event.preventDefault();
 
-          todo.updateProperties(
-            todoPropertiesUpdate.title.value,
-            todoPropertiesUpdate.description.value,
-            todoPropertiesUpdate.dueDate.value,
-            todoPropertiesUpdate.priority.value
-          );
-          toggleForm();
-          form.reset();
-        });
-    });
+            todo.updateProperties(
+              todoPropertiesUpdate.title.value,
+              todoPropertiesUpdate.description.value,
+              todoPropertiesUpdate.dueDate.value,
+              todoPropertiesUpdate.priority.value
+            );
+            toggleForm();
+            form.reset();
+          });
+      });
 
-    todoContainer.append(todoTitle, deleteTodo, updateTodo);
-    todosInInbox.append(todoContainer);
-  });
+      todoContainer.append(todoTitle, deleteTodo, updateTodo);
+      todosInInbox.append(todoContainer);
+    }
+  }
 };
 
 // submit button when the add task button is clicked
@@ -249,7 +252,7 @@ const todayTodos = () => {
   todoList.todos.forEach((todo, index, array) => {
     const todoDueDate = new Date(todo.dueDate).toISOString().split("T")[0];
 
-    if (todoDueDate === todayFormatted) {
+    if (todoDueDate === todayFormatted && todoList.todos.includes(todo)) {
       const todoContainer = document.createElement("div");
       todoContainer.classList.add("todo-container");
 
@@ -264,6 +267,7 @@ const todayTodos = () => {
       deleteTodo.addEventListener("click", () => {
         array.splice(index, 1);
         todoContainer.remove();
+        todayTodos();
       });
 
       const updateTodo = document.createElement("p");
@@ -371,53 +375,53 @@ const projectTodos = (projectName) => {
   projectHeading.textContent = projectName;
   activeContainer.append(projectHeading);
 
-  // Filter todos based on the selected project
-  const projectTodos = todoList.todos.filter(
-    (todo) => todo.project === projectName
-  );
+  for (let i = 0; i < todoList.todos.length; i++) {
+    const todo = todoList.todos[i];
 
-  projectTodos.forEach((todo, index, array) => {
-    const todoContainer = document.createElement("div");
-    todoContainer.classList.add("todo-container");
+    if (todo.project === projectName) {
+      const todoContainer = document.createElement("div"); // Container for each todo
+      todoContainer.classList.add("todo-container"); //  class for styling if needed
 
-    const todoTitle = document.createElement("p");
-    todoTitle.append(todo.title);
-    todoTitle.addEventListener("click", (event) => {
-      toggleTodoDetails(event, index);
-    });
+      const todoTitle = document.createElement("p");
+      todoTitle.append(todo.title);
+      todoTitle.addEventListener("click", (event) => {
+        toggleTodoDetails(event, i);
+      });
 
-    const deleteTodo = document.createElement("p");
-    deleteTodo.textContent = "delete";
-    deleteTodo.addEventListener("click", () => {
-      array.splice(index, 1);
-      todoContainer.remove();
-    });
+      const deleteTodo = document.createElement("p");
+      deleteTodo.textContent = "delete";
+      deleteTodo.addEventListener("click", () => {
+        todoList.todos.splice(i, 1);
+        todoContainer.remove(); // Remove the todo container from the DOM
+        console.log(todoList.todos);
+      });
 
-    const updateTodo = document.createElement("p");
-    updateTodo.textContent = "update";
-    updateTodo.addEventListener("click", (event) => {
-      showUpdateTaskButton();
-      showForm(event);
+      const updateTodo = document.createElement("p");
+      updateTodo.textContent = "update";
+      updateTodo.addEventListener("click", (event) => {
+        showUpdateTaskButton();
+        showForm(event);
 
-      const todoPropertiesUpdate = todoProperty();
+        const todoPropertiesUpdate = todoProperty();
 
-      document
-        .getElementById("update-task")
-        .addEventListener("click", (event) => {
-          event.preventDefault();
+        document
+          .getElementById("update-task")
+          .addEventListener("click", (event) => {
+            event.preventDefault();
 
-          todo.updateProperties(
-            todoPropertiesUpdate.title.value,
-            todoPropertiesUpdate.description.value,
-            todoPropertiesUpdate.dueDate.value,
-            todoPropertiesUpdate.priority.value
-          );
-          toggleForm();
-          form.reset();
-        });
-    });
+            todo.updateProperties(
+              todoPropertiesUpdate.title.value,
+              todoPropertiesUpdate.description.value,
+              todoPropertiesUpdate.dueDate.value,
+              todoPropertiesUpdate.priority.value
+            );
+            toggleForm();
+            form.reset();
+          });
+      });
 
-    todoContainer.append(todoTitle, deleteTodo, updateTodo);
-    projectsContainerElement.append(todoContainer);
-  });
+      todoContainer.append(todoTitle, deleteTodo, updateTodo);
+      projectsContainerElement.append(todoContainer);
+    }
+  }
 };
