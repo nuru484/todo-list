@@ -1,5 +1,5 @@
 // Imports the other modules of the project
-import { createDynamicClassForProject, TodoList } from "./todo";
+import { TodoList } from "./todo";
 
 // Create an in of the TodoList class in the todo.js module
 const todoList = new TodoList();
@@ -34,6 +34,15 @@ const createTodo = (currentProject) => {
     todosFunction();
   } else {
     // Handle project-specific todos if needed
+    todoList.createTodo(
+      todoProperties.title.value,
+      todoProperties.description.value,
+      todoProperties.dueDate.value,
+      todoProperties.priority.value,
+      currentProject
+    );
+
+    projectTodos(currentProject);
   }
 };
 
@@ -102,23 +111,29 @@ const todosFunction = () => {
   const activeContainer = document.getElementById("active-container");
   const todosInInbox = document.getElementById("todos-in-inbox");
   const todoInToday = document.getElementById("todos-in-today");
+  const projectsContainerElement = document.getElementById(
+    "project-todos-container"
+  );
 
   // Clear existing content in activeContainer
   activeContainer.innerHTML = "";
   todosInInbox.innerHTML = "";
   todoInToday.innerHTML = "";
+  projectsContainerElement.innerHTML = "";
 
   const inboxHeading = document.createElement("p");
   inboxHeading.id = "inbox-todos-heading";
   inboxHeading.textContent = "Inbox";
   activeContainer.append(inboxHeading);
 
-  todoList.todos.forEach((value, index, array) => {
+  const InboxTodos = todoList.todos.filter((todo) => todo.project === "Inbox");
+
+  InboxTodos.forEach((todo, index, array) => {
     const todoContainer = document.createElement("div"); // Container for each todo
     todoContainer.classList.add("todo-container"); //  class for styling if needed
 
     const todoTitle = document.createElement("p");
-    todoTitle.append(todoList.todos[index].title);
+    todoTitle.append(todo.title);
     todoTitle.addEventListener("click", (event) => {
       toggleTodoDetails(event, index);
     });
@@ -143,7 +158,7 @@ const todosFunction = () => {
         .addEventListener("click", (event) => {
           event.preventDefault();
 
-          todoList.todos[index].updateProperties(
+          todo.updateProperties(
             todoPropertiesUpdate.title.value,
             todoPropertiesUpdate.description.value,
             todoPropertiesUpdate.dueDate.value,
@@ -213,11 +228,15 @@ const todayTodos = () => {
   const activeContainer = document.getElementById("active-container");
   const todoInToday = document.getElementById("todos-in-today");
   const todosInInbox = document.getElementById("todos-in-inbox");
+  const projectsContainerElement = document.getElementById(
+    "project-todos-container"
+  );
 
   // Clear existing content in activeContainer
   activeContainer.innerHTML = "";
   todoInToday.innerHTML = "";
   todosInInbox.innerHTML = "";
+  projectsContainerElement.innerHTML = "";
 
   const todayHeading = document.createElement("p");
   todayHeading.id = "today-todos-heading";
@@ -227,7 +246,7 @@ const todayTodos = () => {
   const today = new Date();
   const todayFormatted = today.toISOString().split("T")[0];
 
-  todoList.todosForInbox.forEach((todo, index, array) => {
+  todoList.todos.forEach((todo, index, array) => {
     const todoDueDate = new Date(todo.dueDate).toISOString().split("T")[0];
 
     if (todoDueDate === todayFormatted) {
@@ -279,14 +298,21 @@ const todayTodos = () => {
 // Calls the todayTodos function when the today tab is active
 const todayTodoContainer = document.getElementById("today-container");
 todayTodoContainer.addEventListener("click", () => {
-  currentProject = "Inbox";
   todayTodos();
 });
 
 // Calls the todosFunction when the inbox tab is active
 const inboxTodoContainer = document.getElementById("inbox-container");
 inboxTodoContainer.addEventListener("click", () => {
+  currentProject = "Inbox";
+
   todosFunction();
+
+  const projectsContainerElement = document.getElementById(
+    "project-todos-container"
+  );
+
+  projectsContainerElement.innerHTML = "";
 });
 
 //starts here for projects
@@ -316,8 +342,10 @@ addProjectButton.addEventListener("click", () => {
 
     const newProject = document.createElement("div");
     newProject.id = projectName;
-    const mainContent = document.getElementById("main-content");
-    mainContent.append(newProject);
+    const projectsContainerElement = document.getElementById(
+      "project-todos-container"
+    );
+    projectsContainerElement.append(newProject);
 
     newProjectContainer.append(newProjectName, deleteProject);
     projectsContainer.append(newProjectContainer);
@@ -326,7 +354,17 @@ addProjectButton.addEventListener("click", () => {
 
 const projectTodos = (projectName) => {
   const activeContainer = document.getElementById("active-container");
+  const todosInInbox = document.getElementById("todos-in-inbox");
+  const todoInToday = document.getElementById("todos-in-today");
+  const projectsContainerElement = document.getElementById(
+    "project-todos-container"
+  );
+
+  // Clear existing content in activeContainer, todosInInbox, todoInToday, and todoInNewProject
   activeContainer.innerHTML = "";
+  todosInInbox.innerHTML = "";
+  todoInToday.innerHTML = "";
+  projectsContainerElement.innerHTML = "";
 
   const projectHeading = document.createElement("p");
   projectHeading.id = "project-todos-heading";
@@ -338,7 +376,48 @@ const projectTodos = (projectName) => {
     (todo) => todo.project === projectName
   );
 
-  projectTodos.forEach((todo, index) => {
-    // Display project-specific todos as needed
+  projectTodos.forEach((todo, index, array) => {
+    const todoContainer = document.createElement("div");
+    todoContainer.classList.add("todo-container");
+
+    const todoTitle = document.createElement("p");
+    todoTitle.append(todo.title);
+    todoTitle.addEventListener("click", (event) => {
+      toggleTodoDetails(event, index);
+    });
+
+    const deleteTodo = document.createElement("p");
+    deleteTodo.textContent = "delete";
+    deleteTodo.addEventListener("click", () => {
+      array.splice(index, 1);
+      todoContainer.remove();
+    });
+
+    const updateTodo = document.createElement("p");
+    updateTodo.textContent = "update";
+    updateTodo.addEventListener("click", (event) => {
+      showUpdateTaskButton();
+      showForm(event);
+
+      const todoPropertiesUpdate = todoProperty();
+
+      document
+        .getElementById("update-task")
+        .addEventListener("click", (event) => {
+          event.preventDefault();
+
+          todo.updateProperties(
+            todoPropertiesUpdate.title.value,
+            todoPropertiesUpdate.description.value,
+            todoPropertiesUpdate.dueDate.value,
+            todoPropertiesUpdate.priority.value
+          );
+          toggleForm();
+          form.reset();
+        });
+    });
+
+    todoContainer.append(todoTitle, deleteTodo, updateTodo);
+    projectsContainerElement.append(todoContainer);
   });
 };
