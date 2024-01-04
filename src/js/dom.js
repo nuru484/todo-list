@@ -1,5 +1,6 @@
 // Imports the other modules of the project
 import { TodoList } from "./todo";
+import { validateForm } from "./validation.js";
 
 // Create an in of the TodoList class in the todo.js module
 const todoList = new TodoList();
@@ -144,7 +145,6 @@ const todosFunction = () => {
       deleteTodo.addEventListener("click", () => {
         todoList.todos.splice(i, 1);
         todoContainer.remove(); // Remove the todo container from the DOM
-        console.log(todoList.todos);
       });
 
       const updateTodo = document.createElement("p");
@@ -175,17 +175,23 @@ const todosFunction = () => {
       todosInInbox.append(todoContainer);
     }
   }
+  todosInInbox.append(addTodoButton);
 };
 
 // submit button when the add task button is clicked
 
 document.getElementById("submit").addEventListener("click", (event) => {
   event.preventDefault();
+
+  if (!validateForm()) {
+    return false;
+  }
   createTodo(currentProject);
   form.reset();
   toggleForm();
 });
 
+// function to toggle todo details
 const toggleTodoDetails = (event, index) => {
   const todoContainer = event.currentTarget.parentElement;
 
@@ -315,17 +321,30 @@ inboxTodoContainer.addEventListener("click", () => {
   const projectsContainerElement = document.getElementById(
     "project-todos-container"
   );
-
   projectsContainerElement.innerHTML = "";
 });
 
-//starts here for projects
+//Projects section of the app code starts here
 
-const projectsContainer = document.getElementById("projects-container");
-
+// Displays the input fields for project name
 const addProjectButton = document.getElementById("add-project");
 addProjectButton.addEventListener("click", () => {
-  const projectName = prompt(`Enter the project name:`);
+  // const projectName = prompt(`Enter the project name:`);
+
+  const projectNameInput = document.getElementById("project-name-id");
+  projectNameInput.style.display = "block";
+
+  // const projectName = projectNameInput.value;
+  const submitProjectName = document.getElementById("submit-project-name");
+  submitProjectName.style.display = "block";
+});
+
+// Function to display a project name when the add button is clicked
+const displayProjectName = () => {
+  const projectsContainer = document.getElementById("projects-container");
+
+  const projectNameInput = document.getElementById("project-name-id");
+  const projectName = projectNameInput.value;
 
   if (projectName) {
     const newProjectContainer = document.createElement("div");
@@ -338,7 +357,7 @@ addProjectButton.addEventListener("click", () => {
     newProjectContainer.addEventListener("click", () => {
       currentProject = projectName;
 
-      projectTodos(projectName);
+      projectTodos(currentProject);
     });
 
     const deleteProject = document.createElement("p");
@@ -353,9 +372,19 @@ addProjectButton.addEventListener("click", () => {
 
     newProjectContainer.append(newProjectName, deleteProject);
     projectsContainer.append(newProjectContainer);
-  }
-});
 
+    // Reset the input and turn the display of it and the submit button off after adding
+    projectNameInput.value = "";
+    projectNameInput.style.display = "none";
+    submitProjectName.style.display = "none";
+  }
+};
+
+//Event listener to the submit project name button that calls the display project name function
+const submitProjectName = document.getElementById("submit-project-name");
+submitProjectName.addEventListener("click", displayProjectName());
+
+// Function to add todos under a project
 const projectTodos = (projectName) => {
   const activeContainer = document.getElementById("active-container");
   const todosInInbox = document.getElementById("todos-in-inbox");
@@ -393,7 +422,6 @@ const projectTodos = (projectName) => {
       deleteTodo.addEventListener("click", () => {
         todoList.todos.splice(i, 1);
         todoContainer.remove(); // Remove the todo container from the DOM
-        console.log(todoList.todos);
       });
 
       const updateTodo = document.createElement("p");
@@ -424,4 +452,5 @@ const projectTodos = (projectName) => {
       projectsContainerElement.append(todoContainer);
     }
   }
+  projectsContainerElement.append(addTodoButton);
 };
