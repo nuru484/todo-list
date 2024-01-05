@@ -360,15 +360,24 @@ const displayProjectName = () => {
       projectTodos(currentProject);
     });
 
-    const deleteProject = document.createElement("p");
-    deleteProject.textContent = "X";
+    const deleteProject = document.createElement("img");
+    deleteProject.src = "../src/assets/delete.png";
+    deleteProject.className = "delete-project-button";
+    deleteProject.style.width = "20px";
 
-    const newProject = document.createElement("div");
-    newProject.id = projectName;
-    const projectsContainerElement = document.getElementById(
-      "project-todos-container"
-    );
-    projectsContainerElement.append(newProject);
+    deleteProject.addEventListener("click", (event) => {
+      newProjectContainer.remove();
+
+      for (let i = 0; i < todoList.todos.length; i++) {
+        const todo = todoList.todos[i];
+        console.log(todo);
+        if (todo.project === projectName) {
+          todoList.todos.splice(i, 1);
+        }
+      }
+      event.stopPropagation();
+      todosFunction();
+    });
 
     newProjectContainer.append(newProjectName, deleteProject);
     projectsContainer.append(newProjectContainer);
@@ -382,7 +391,9 @@ const displayProjectName = () => {
 
 //Event listener to the submit project name button that calls the display project name function
 const submitProjectName = document.getElementById("submit-project-name");
-submitProjectName.addEventListener("click", displayProjectName());
+submitProjectName.addEventListener("click", () => {
+  displayProjectName();
+});
 
 // Function to add todos under a project
 const projectTodos = (projectName) => {
