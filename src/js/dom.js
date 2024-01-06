@@ -1,6 +1,8 @@
 // Imports the other modules of the project
 import { TodoList } from "./todo";
 import { validateForm } from "./validation.js";
+import "../assets/refresh.png";
+import "../assets/delete.png";
 
 // Create an in of the TodoList class in the todo.js module
 const todoList = new TodoList();

@@ -23,6 +23,13 @@ header {
 
 #logo-container {
   list-style: none;
+  transition: transform 0.3s ease-in-out;
+}
+
+#logo-container:hover,
+#completed-tasks:hover {
+  cursor: pointer;
+  transform: scale(1.05);
 }
 
 #completed-tasks {
@@ -31,10 +38,11 @@ header {
   align-items: center;
   padding: 10px;
   margin: auto 0;
-  height: 50px;
   border-radius: 8px;
   border: 3.15px solid black;
+  font-size: 0.9rem;
   font-family: Arial, Helvetica, sans-serif;
+  transition: transform 0.3s ease-in-out;
 }
 
 #app-title {
