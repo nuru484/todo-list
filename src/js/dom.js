@@ -277,16 +277,18 @@ const todayTodos = () => {
         toggleTodoDetails(event, index);
       });
 
-      const deleteTodo = document.createElement("p");
-      deleteTodo.textContent = "delete";
+      const deleteTodo = document.createElement("img");
+      deleteTodo.src = "./assets/delete.png";
+      deleteTodo.style.width = "20px";
       deleteTodo.addEventListener("click", () => {
         array.splice(index, 1);
         todoContainer.remove();
         todayTodos();
       });
 
-      const updateTodo = document.createElement("p");
-      updateTodo.textContent = "update";
+      const updateTodo = document.createElement("img");
+      updateTodo.src = "./assets/refresh.png";
+      updateTodo.style.width = "25px";
       updateTodo.addEventListener("click", (event) => {
         showUpdateTaskButton();
         showForm(event);
@@ -445,15 +447,17 @@ const projectTodos = (projectName) => {
         toggleTodoDetails(event, i);
       });
 
-      const deleteTodo = document.createElement("p");
-      deleteTodo.textContent = "delete";
+      const deleteTodo = document.createElement("img");
+      deleteTodo.src = "./assets/delete.png";
+      deleteTodo.style.width = "20px";
       deleteTodo.addEventListener("click", () => {
         todoList.todos.splice(i, 1);
         todoContainer.remove(); // Remove the todo container from the DOM
       });
 
-      const updateTodo = document.createElement("p");
-      updateTodo.textContent = "update";
+      const updateTodo = document.createElement("img");
+      updateTodo.src = "./assets/refresh.png";
+      updateTodo.style.width = "25px";
       updateTodo.addEventListener("click", (event) => {
         showUpdateTaskButton();
         showForm(event);
