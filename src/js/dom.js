@@ -140,15 +140,17 @@ const todosFunction = () => {
         toggleTodoDetails(event, i);
       });
 
-      const deleteTodo = document.createElement("p");
-      deleteTodo.textContent = "delete";
+      const deleteTodo = document.createElement("img");
+      deleteTodo.src = "../src/assets/delete.png";
+      deleteTodo.style.width = "20px";
       deleteTodo.addEventListener("click", () => {
         todoList.todos.splice(i, 1);
         todoContainer.remove(); // Remove the todo container from the DOM
       });
 
-      const updateTodo = document.createElement("p");
-      updateTodo.textContent = "update";
+      const updateTodo = document.createElement("img");
+      updateTodo.src = "../src/assets/refresh.png";
+      updateTodo.style.width = "25px";
       updateTodo.addEventListener("click", (event) => {
         showUpdateTaskButton();
         showForm(event);
@@ -194,6 +196,7 @@ document.getElementById("submit").addEventListener("click", (event) => {
 // function to toggle todo details
 const toggleTodoDetails = (event, index) => {
   const todoContainer = event.currentTarget.parentElement;
+  // const todoContainer = document.getElementsByClassName("todo-container");
 
   // Find the existing detail container for the clicked todo
   const existingDetailContainer = document.getElementById(
@@ -202,24 +205,28 @@ const toggleTodoDetails = (event, index) => {
 
   if (existingDetailContainer) {
     // If the container exists, remove it to hide the details
+    todoContainer.classList.toggle("active");
     existingDetailContainer.remove();
   } else {
     // If the container doesn't exist, create and append it inside the todo container
+
+    todoContainer.classList.toggle("active");
+
     const todoDetailContainer = document.createElement("div");
     todoDetailContainer.classList.add("todo-detail-container");
     todoDetailContainer.id = `todo-detail-${index}`; // Use an id to identify the container
 
     const todoTitle = document.createElement("p");
-    todoTitle.append(todoList.todos[index].title);
+    todoTitle.append(`Title: ${todoList.todos[index].title}`);
 
     const todoDescription = document.createElement("p");
-    todoDescription.append(todoList.todos[index].description);
+    todoDescription.append(`Description: ${todoList.todos[index].description}`);
 
     const todoDuedate = document.createElement("p");
-    todoDuedate.append(todoList.todos[index].dueDate);
+    todoDuedate.append(`Duedate: ${todoList.todos[index].dueDate}`);
 
     const todoPriority = document.createElement("p");
-    todoPriority.append(todoList.todos[index].priority);
+    todoPriority.append(`Priority: ${todoList.todos[index].priority}`);
 
     todoDetailContainer.append(
       todoTitle,
@@ -229,7 +236,7 @@ const toggleTodoDetails = (event, index) => {
     );
 
     // Append the details container inside the todo container
-    todoContainer.appendChild(todoDetailContainer);
+    todoContainer.append(todoDetailContainer);
   }
 };
 
@@ -334,9 +341,9 @@ addProjectButton.addEventListener("click", () => {
   const projectNameInput = document.getElementById("project-name-id");
   projectNameInput.style.display = "block";
 
-  // const projectName = projectNameInput.value;
-  const submitProjectName = document.getElementById("submit-project-name");
   submitProjectName.style.display = "block";
+
+  cancelProjectName.style.display = "block";
 });
 
 // Function to display a project name when the add button is clicked
@@ -362,7 +369,6 @@ const displayProjectName = () => {
 
     const deleteProject = document.createElement("img");
     deleteProject.src = "../src/assets/delete.png";
-    deleteProject.className = "delete-project-button";
     deleteProject.style.width = "20px";
 
     deleteProject.addEventListener("click", (event) => {
@@ -370,7 +376,6 @@ const displayProjectName = () => {
 
       for (let i = 0; i < todoList.todos.length; i++) {
         const todo = todoList.todos[i];
-        console.log(todo);
         if (todo.project === projectName) {
           todoList.todos.splice(i, 1);
         }
@@ -386,6 +391,7 @@ const displayProjectName = () => {
     projectNameInput.value = "";
     projectNameInput.style.display = "none";
     submitProjectName.style.display = "none";
+    cancelProjectName.style.display = "none";
   }
 };
 
@@ -393,6 +399,15 @@ const displayProjectName = () => {
 const submitProjectName = document.getElementById("submit-project-name");
 submitProjectName.addEventListener("click", () => {
   displayProjectName();
+});
+
+const cancelProjectName = document.getElementById("cancel-project-name");
+cancelProjectName.addEventListener("click", () => {
+  const projectNameInput = document.getElementById("project-name-id");
+  projectNameInput.value = "";
+  projectNameInput.style.display = "none";
+  submitProjectName.style.display = "none";
+  cancelProjectName.style.display = "none";
 });
 
 // Function to add todos under a project
