@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="assets/logo.png" />
+    <link rel="icon" href="assets/checked.png" />
     <title>Todo List</title>
     <style>
       /* Add your styles here */
@@ -18,35 +18,46 @@
           </li>
         </ul>
 
-        <div>
-          <img src="assets/checked.png" width="60px" alt="A logo icon" />
-          <p>What <span>Todo</span></p>
+        <div id="app-title">
+          <img src="assets/checked.png" width="35px" alt="A logo icon" />
+          <p>What<span>Todo</span></p>
         </div>
 
-        <div><p>Completed Tasks</p></div>
+        <div id="completed-tasks"><p>Completed Tasks</p></div>
       </header>
 
       <nav id="nav-bar">
         <div id="mini-nav-links">
-          <h1>Home</h1>
-          <div class="nav-link">
-            <div id="inbox-container">
-              <p id="inbox">
-                <img src="assets/inbox.png" width="25px" alt="" /> Inbox
-              </p>
-            </div>
+          <h1 id="home-heading">Home</h1>
+          <div id="inbox-container">
+            <p id="inbox">
+              <img src="assets/receive-mail.png" width="20px" alt="" />
+              Inbox
+            </p>
           </div>
-          <div class="nav-link">
-            <div id="today-container">
-              <p id="today">
-                <img src="assets/today.png" width="25px" alt="" /> Today
-              </p>
-            </div>
+          <div id="today-container">
+            <p id="today">
+              <img src="assets/calendar.png" width="20px" alt="" /> Today
+            </p>
+          </div>
+
+          <div id="this-week-container">
+            <p id="this-week">
+              <img src="assets/7-days.png" width="20px" alt="" />
+              This Week
+            </p>
+          </div>
+          <div id="important-container">
+            <p id="important">
+              <img src="assets/star.png" width="20px" alt="" />
+              Important
+            </p>
           </div>
         </div>
+
         <div id="big-nav-link">
+          <h1 id="projects-heading">Projects</h1>
           <div id="projects-container">
-            <h1 id="projects">Projects</h1>
             <div id="project-name-input">
               <input
                 type="text"
@@ -56,18 +67,25 @@
                 style="display: none"
                 required
               />
+
               <input
                 type="submit"
                 value="Add"
                 id="submit-project-name"
                 style="display: none"
               />
+              <input
+                type="submit"
+                value="Cancel"
+                id="cancel-project-name"
+                style="display: none"
+              />
             </div>
             <div id="add-project">
               <img
-                src="assets/plus.png"
+                src="assets/add.png"
                 alt="addition image"
-                height="25px"
+                height="20px"
               />
               <p>Add Project</p>
             </div>
@@ -80,7 +98,13 @@
           <form class="todo-form" id="my-form">
             <!-- Title Input -->
             <label for="title">Title:</label>
-            <input type="text" id="title" name="title" required />
+            <input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="Enter Todo Title"
+              required
+            />
 
             <!-- Description Textarea -->
             <label for="description">Description:</label>
@@ -89,6 +113,7 @@
               name="description"
               rows="4"
               cols="50"
+              placeholder="Enter Todo Description"
               required
             ></textarea>
 
@@ -112,18 +137,13 @@
         <div id="active-container">Inbox</div>
         <div id="todos-in-inbox">
           <div id="add-todo-button">
-            <img
-              src="assets/plus.png"
-              alt="addition image"
-              height="25px"
-            />
+            <img src="assets/add.png" alt="addition image" height="20px" />
             Add Task
           </div>
         </div>
         <div id="todos-in-today"></div>
         <div id="project-todos-container" class="project-todos-container"></div>
       </main>
-
       <footer>@Nurudeen Abdul-Majeed</footer>
     </div>
   </body>
