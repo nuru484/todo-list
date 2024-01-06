@@ -142,6 +142,18 @@ const todosFunction = () => {
         toggleTodoDetails(event, i);
       });
 
+      const todoComplete = document.createElement("input");
+      todoComplete.type = "checkbox";
+
+      todoComplete.style.width = "15px";
+      todoComplete.addEventListener("change", () => {
+        if (todoTitle.style.textDecoration === "line-through") {
+          todoTitle.style.textDecoration = "none";
+        } else {
+          todoTitle.style.textDecoration = "line-through";
+        }
+      });
+
       const deleteTodo = document.createElement("img");
       deleteTodo.src = "./assets/delete.png";
       deleteTodo.style.width = "20px";
@@ -175,7 +187,7 @@ const todosFunction = () => {
           });
       });
 
-      todoContainer.append(todoTitle, deleteTodo, updateTodo);
+      todoContainer.append(todoComplete, todoTitle, deleteTodo, updateTodo);
       todosInInbox.append(todoContainer);
     }
   }
@@ -277,6 +289,18 @@ const todayTodos = () => {
         toggleTodoDetails(event, index);
       });
 
+      const todoComplete = document.createElement("input");
+      todoComplete.type = "checkbox";
+
+      todoComplete.style.width = "15px";
+      todoComplete.addEventListener("change", () => {
+        if (todoTitle.style.textDecoration === "line-through") {
+          todoTitle.style.textDecoration = "none";
+        } else {
+          todoTitle.style.textDecoration = "line-through";
+        }
+      });
+
       const deleteTodo = document.createElement("img");
       deleteTodo.src = "./assets/delete.png";
       deleteTodo.style.width = "20px";
@@ -311,7 +335,7 @@ const todayTodos = () => {
           });
       });
 
-      todoContainer.append(todoTitle, deleteTodo, updateTodo);
+      todoContainer.append(todoComplete, todoTitle, deleteTodo, updateTodo);
       todoInToday.append(todoContainer);
     }
   });
@@ -447,6 +471,18 @@ const projectTodos = (projectName) => {
         toggleTodoDetails(event, i);
       });
 
+      const todoComplete = document.createElement("input");
+      todoComplete.type = "checkbox";
+
+      todoComplete.style.width = "15px";
+      todoComplete.addEventListener("change", () => {
+        if (todoTitle.style.textDecoration === "line-through") {
+          todoTitle.style.textDecoration = "none";
+        } else {
+          todoTitle.style.textDecoration = "line-through";
+        }
+      });
+
       const deleteTodo = document.createElement("img");
       deleteTodo.src = "./assets/delete.png";
       deleteTodo.style.width = "20px";
@@ -480,7 +516,7 @@ const projectTodos = (projectName) => {
           });
       });
 
-      todoContainer.append(todoTitle, deleteTodo, updateTodo);
+      todoContainer.append(todoComplete, todoTitle, deleteTodo, updateTodo);
       projectsContainerElement.append(todoContainer);
     }
   }

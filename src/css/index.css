@@ -165,7 +165,7 @@ nav {
 
 #todos-in-inbox {
   overflow-y: scroll;
-  height: 60vh;
+  max-height: 60vh;
 }
 
 #active-container {
@@ -228,7 +228,7 @@ form select {
 .todo-container {
   display: grid;
   justify-content: center;
-  grid-template-columns: 80% 5% 5%;
+  grid-template-columns: 5% 75% 5% 5%;
   padding: 8px;
   margin: 20px;
   border: 2px solid #374958;
@@ -236,7 +236,7 @@ form select {
 
 .todo-container.active {
   display: grid;
-  grid-template-columns: 80% 5% 5%;
+  grid-template-columns: 5% 75% 5% 5%;
   grid-template-rows: 20px 1fr;
   padding: 10px;
   justify-content: center;
