@@ -143,7 +143,7 @@ const todosFunction = () => {
       });
 
       const deleteTodo = document.createElement("img");
-      deleteTodo.src = "../src/assets/delete.png";
+      deleteTodo.src = "./assets/delete.png";
       deleteTodo.style.width = "20px";
       deleteTodo.addEventListener("click", () => {
         todoList.todos.splice(i, 1);
@@ -151,7 +151,7 @@ const todosFunction = () => {
       });
 
       const updateTodo = document.createElement("img");
-      updateTodo.src = "../src/assets/refresh.png";
+      updateTodo.src = "./assets/refresh.png";
       updateTodo.style.width = "25px";
       updateTodo.addEventListener("click", (event) => {
         showUpdateTaskButton();
@@ -370,7 +370,7 @@ const displayProjectName = () => {
     });
 
     const deleteProject = document.createElement("img");
-    deleteProject.src = "../src/assets/delete.png";
+    deleteProject.src = "./assets/delete.png";
     deleteProject.style.width = "20px";
 
     deleteProject.addEventListener("click", (event) => {
