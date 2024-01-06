@@ -6,7 +6,6 @@
 
 body {
   background-color: #ececec;
-  overflow: hidden;
 }
 #container {
   display: grid;
@@ -22,6 +21,7 @@ header {
 header {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
   border-bottom: 2px solid #2abd67;
   background-color: #f2f3f5;
   padding: 20px;
@@ -42,11 +42,11 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 0.5rem;
   margin: auto 0;
   border-radius: 8px;
   border: 3.15px solid black;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-family: Arial, Helvetica, sans-serif;
   transition: transform 0.3s ease-in-out;
 }
@@ -55,7 +55,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bolder;
   color: #374958;
@@ -66,8 +66,6 @@ header {
 }
 
 #main-content {
-  height: 50vh;
-  overflow-y: scroll;
   margin: 20px;
 }
 
@@ -85,7 +83,6 @@ nav {
   border-bottom: 2px solid #374958;
   padding: 5px;
   font-size: 1.2rem;
-  overflow-y: hidden;
 }
 
 #inbox,
@@ -165,11 +162,6 @@ nav {
   justify-content: space-between;
 }
 
-#projects-container {
-  height: 10em;
-  overflow-y: scroll;
-}
-
 #active-container {
   background-color: #2abd67;
   height: 5rem;
@@ -185,7 +177,7 @@ nav {
 
 #add-todo-button {
   background-color: white;
-  padding: 8px 25px;
+  padding: 10px 25px;
   border-radius: 2px;
   font-family: Arial, Helvetica, sans-serif;
   display: flex;
