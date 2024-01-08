@@ -496,7 +496,7 @@ const displayStoredProjects = () => {
     newProjectName.textContent = currentValue;
 
     newProjectContainer.addEventListener("click", () => {
-      currentProject = projectName;
+      //   currentProject = projectName;
       projectTodos(currentProject);
     });
 
@@ -508,10 +508,12 @@ const displayStoredProjects = () => {
       newProjectContainer.remove();
 
       // Remove the project from stored projects
-      const updatedProjects = storedProjects.filter(
-        (project) => project !== currentValue
-      );
-      localStorage.setItem("projects", JSON.stringify(updatedProjects));
+      for (let i = 0; i < storedProjects.length; i++) {
+        const project = storedProjects[i];
+        storedProjects.splice(i, 1);
+      }
+
+      localStorage.setItem("projects", JSON.stringify(storedProjects));
 
       // Remove todos related to the deleted project
       for (let i = 0; i < todosInStorage.length; i++) {
