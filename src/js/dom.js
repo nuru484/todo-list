@@ -112,106 +112,17 @@ todoDetailsFormContainer.addEventListener("click", () => {
   toggleForm();
 });
 
-const todosFunction = () => {
-  const activeContainer = document.getElementById("active-container");
-  const todosInInbox = document.getElementById("todos-in-inbox");
-  const todoInToday = document.getElementById("todos-in-today");
-  const projectsContainerElement = document.getElementById(
-    "project-todos-container"
-  );
-
-  // Clear existing content in activeContainer
-  activeContainer.innerHTML = "";
-  todosInInbox.innerHTML = "";
-  todoInToday.innerHTML = "";
-  projectsContainerElement.innerHTML = "";
-
-  const inboxHeading = document.createElement("p");
-  inboxHeading.id = "inbox-todos-heading";
-  inboxHeading.textContent = "Inbox";
-  activeContainer.append(inboxHeading);
-
-  for (let i = 0; i < todoList.todos.length; i++) {
-    const todo = todoList.todos[i];
-
-    if (todo.project === "Inbox") {
-      const todoContainer = document.createElement("div"); // Container for each todo
-      todoContainer.classList.add("todo-container"); //  class for styling if needed
-
-      const todoTitle = document.createElement("p");
-      todoTitle.append(todo.title);
-      todoTitle.addEventListener("click", (event) => {
-        toggleTodoDetails(event, i);
-      });
-
-      const todoComplete = document.createElement("input");
-      todoComplete.type = "checkbox";
-      todoComplete.style.width = "15px";
-
-      todoComplete.addEventListener("change", () => {
-        console.log(todo);
-      });
-
-      const deleteTodo = document.createElement("img");
-      deleteTodo.src = "./assets/delete.png";
-      deleteTodo.style.width = "20px";
-      deleteTodo.addEventListener("click", () => {
-        todoList.todos.splice(i, 1);
-        setTodosInLocalStorage(todoList.todos);
-        todoContainer.remove(); // Remove the todo container from the DOM
-      });
-
-      const updateTodo = document.createElement("img");
-      updateTodo.src = "./assets/refresh.png";
-      updateTodo.style.width = "25px";
-      updateTodo.addEventListener("click", (event) => {
-        showUpdateTaskButton();
-        showForm(event);
-
-        const todoPropertiesUpdate = todoProperty();
-
-        document
-          .getElementById("update-task")
-          .addEventListener("click", (event) => {
-            event.preventDefault();
-
-            todo.updateProperties(
-              todoPropertiesUpdate.title.value,
-              todoPropertiesUpdate.description.value,
-              todoPropertiesUpdate.dueDate.value,
-              todoPropertiesUpdate.priority.value
-            );
-            toggleForm();
-            form.reset();
-          });
-      });
-
-      todoContainer.append(todoComplete, todoTitle, deleteTodo, updateTodo);
-      todosInInbox.append(todoContainer);
-    }
+function updateTodoTitleStyle(todo, todoTitle) {
+  if (todo.completed === true) {
+    todoTitle.style.textDecoration = "line-through";
+  } else {
+    todoTitle.style.textDecoration = "none";
   }
-  todosInInbox.append(addTodoButton);
-};
-
-todosFunction();
-
-// submit button when the add task button is clicked
-document.getElementById("submit").addEventListener("click", (event) => {
-  event.preventDefault();
-
-  if (!validateForm()) {
-    return false;
-  }
-
-  createTodo(currentProject);
-  form.reset();
-  toggleForm();
-});
+}
 
 // function to toggle todo details
 const toggleTodoDetails = (event, index) => {
   const todoContainer = event.currentTarget.parentElement;
-  // const todoContainer = document.getElementsByClassName("todo-container");
 
   // Find the existing detail container for the clicked todo
   const existingDetailContainer = document.getElementById(
@@ -224,7 +135,6 @@ const toggleTodoDetails = (event, index) => {
     existingDetailContainer.remove();
   } else {
     // If the container doesn't exist, create and append it inside the todo container
-
     todoContainer.classList.toggle("active");
 
     const todoDetailContainer = document.createElement("div");
@@ -255,6 +165,124 @@ const toggleTodoDetails = (event, index) => {
   }
 };
 
+const updateTodoFunction = (todo) => {
+  showUpdateTaskButton();
+  showForm();
+
+  const todoPropertiesUpdate = todoProperty();
+
+  document.getElementById("update-task").addEventListener("click", (event) => {
+    event.preventDefault();
+
+    todo.updateProperties(
+      todoPropertiesUpdate.title.value,
+      todoPropertiesUpdate.description.value,
+      todoPropertiesUpdate.dueDate.value,
+      todoPropertiesUpdate.priority.value,
+      todo.project
+    );
+
+    toggleForm();
+    setTodosInLocalStorage(todoList.todos);
+    if (todo.project === "inbox") {
+      todosFunction();
+    } else {
+      projectTodos(todo.project);
+    }
+  });
+};
+
+const todoElements = (todo, i) => {
+  const todoContainer = document.createElement("div"); // Container for each todo
+  todoContainer.classList.add("todo-container"); //  class for styling if needed
+
+  const todoTitle = document.createElement("p");
+  todoTitle.append(todo.title);
+  todoTitle.addEventListener("click", (event) => {
+    toggleTodoDetails(event, i);
+  });
+
+  const todoComplete = document.createElement("input");
+  todoComplete.type = "checkbox";
+  todoComplete.style.width = "15px";
+  todoComplete.checked = todo.completed;
+
+  updateTodoTitleStyle(todo, todoTitle);
+
+  todoComplete.addEventListener("change", () => {
+    todo.toggleCompleted(); // Toggle the completion state
+
+    updateTodoTitleStyle(todo, todoTitle);
+
+    setTodosInLocalStorage(todoList.todos);
+  });
+
+  const deleteTodo = document.createElement("img");
+  deleteTodo.src = "./assets/delete.png";
+  deleteTodo.style.width = "20px";
+  deleteTodo.addEventListener("click", () => {
+    todoList.todos.splice(i, 1);
+    setTodosInLocalStorage(todoList.todos);
+    todoContainer.remove(); // Remove the todo container from the DOM
+  });
+
+  const updateTodo = document.createElement("img");
+  updateTodo.src = "./assets/refresh.png";
+  updateTodo.style.width = "25px";
+
+  updateTodo.addEventListener("click", () => {
+    updateTodoFunction(todo);
+  });
+
+  todoContainer.append(todoComplete, todoTitle, deleteTodo, updateTodo);
+
+  return todoContainer;
+};
+
+const todosFunction = () => {
+  const activeContainer = document.getElementById("active-container");
+  const todosInInbox = document.getElementById("todos-in-inbox");
+  const todoInToday = document.getElementById("todos-in-today");
+  const projectsContainerElement = document.getElementById(
+    "project-todos-container"
+  );
+
+  // Clear existing content in activeContainer
+  activeContainer.innerHTML = "";
+  todosInInbox.innerHTML = "";
+  todoInToday.innerHTML = "";
+  projectsContainerElement.innerHTML = "";
+
+  const inboxHeading = document.createElement("p");
+  inboxHeading.id = "inbox-todos-heading";
+  inboxHeading.textContent = "Inbox";
+  activeContainer.append(inboxHeading);
+
+  for (let i = 0; i < todoList.todos.length; i++) {
+    const todo = todoList.todos[i];
+
+    if (todo.project === "Inbox") {
+      const todoElementsFromFunc = todoElements(todo, i);
+      todosInInbox.append(todoElementsFromFunc);
+    }
+  }
+  todosInInbox.append(addTodoButton);
+};
+
+// Calling the todos function to render existing todos on page load
+todosFunction();
+
+// submit button when the add task button is clicked
+document.getElementById("submit").addEventListener("click", (event) => {
+  event.preventDefault();
+  if (!validateForm()) {
+    return false;
+  }
+  createTodo(currentProject);
+  form.reset();
+  toggleForm();
+});
+
 const todayTodos = () => {
   const activeContainer = document.getElementById("active-container");
   const todoInToday = document.getElementById("todos-in-today");
@@ -279,69 +307,13 @@ const todayTodos = () => {
 
   for (let i = 0; i < todoList.todos.length; i++) {
     const todo = todoList.todos[i];
-
     const todoDueDate = new Date(todo.dueDate).toISOString().split("T")[0];
 
     if (todoDueDate === todayFormatted && todoList.todos.includes(todo)) {
-      const todoContainer = document.createElement("div");
-      todoContainer.classList.add("todo-container");
-
-      const todoTitle = document.createElement("p");
-      todoTitle.append(todo.title);
-      todoTitle.addEventListener("click", (event) => {
-        toggleTodoDetails(event, i);
-      });
-
-      const todoComplete = document.createElement("input");
-      todoComplete.type = "checkbox";
-
-      todoComplete.style.width = "15px";
-      todoComplete.addEventListener("change", () => {
-        if (todoTitle.style.textDecoration === "line-through") {
-          todoTitle.style.textDecoration = "none";
-        } else {
-          todoTitle.style.textDecoration = "line-through";
-        }
-      });
-
-      const deleteTodo = document.createElement("img");
-      deleteTodo.src = "./assets/delete.png";
-      deleteTodo.style.width = "20px";
-      deleteTodo.addEventListener("click", () => {
-        todoList.todos.splice(i, 1);
-        setTodosInLocalStorage(todoList.todos);
-        todoContainer.remove();
-        todayTodos();
-      });
-
-      const updateTodo = document.createElement("img");
-      updateTodo.src = "./assets/refresh.png";
-      updateTodo.style.width = "25px";
-      updateTodo.addEventListener("click", (event) => {
-        showUpdateTaskButton();
-        showForm(event);
-
-        const todoPropertiesUpdate = todoProperty();
-
-        document
-          .getElementById("update-task")
-          .addEventListener("click", (event) => {
-            event.preventDefault();
-
-            todo[i].updateProperties(
-              todoPropertiesUpdate.title.value,
-              todoPropertiesUpdate.description.value,
-              todoPropertiesUpdate.dueDate.value,
-              todoPropertiesUpdate.priority.value
-            );
-            toggleForm();
-            form.reset();
-          });
-      });
-
-      todoContainer.append(todoComplete, todoTitle, deleteTodo, updateTodo);
-      todoInToday.append(todoContainer);
+      const todoElementsFromFunc = todoElements(todo, i);
+      todoInToday.append(todoElementsFromFunc);
     }
+    return;
   }
 };
 
@@ -355,13 +327,7 @@ todayTodoContainer.addEventListener("click", () => {
 const inboxTodoContainer = document.getElementById("inbox-container");
 inboxTodoContainer.addEventListener("click", () => {
   currentProject = "Inbox";
-
   todosFunction();
-
-  const projectsContainerElement = document.getElementById(
-    "project-todos-container"
-  );
-  projectsContainerElement.innerHTML = "";
 });
 
 //Projects section of the app code starts here
@@ -413,6 +379,7 @@ const displayProjectName = () => {
         newProjectName.textContent = currentValue;
 
         newProjectContainer.addEventListener("click", () => {
+          form.reset();
           currentProject = currentValue;
           projectTodos(currentProject);
         });
@@ -474,6 +441,7 @@ const displayStoredProjects = () => {
     newProjectName.textContent = currentValue;
 
     newProjectContainer.addEventListener("click", () => {
+      form.reset();
       currentProject = currentValue;
       projectTodos(currentProject);
     });
@@ -551,63 +519,9 @@ const projectTodos = (projectName) => {
     const todo = todoList.todos[i];
 
     if (todo.project === projectName) {
-      const todoContainer = document.createElement("div"); // Container for each todo
-      todoContainer.classList.add("todo-container"); //  class for styling if needed
+      const todoElementsFromFunc = todoElements(todo, i);
 
-      const todoTitle = document.createElement("p");
-      todoTitle.append(todo.title);
-      todoTitle.addEventListener("click", (event) => {
-        toggleTodoDetails(event, i);
-      });
-
-      const todoComplete = document.createElement("input");
-      todoComplete.type = "checkbox";
-
-      todoComplete.style.width = "15px";
-      todoComplete.addEventListener("change", () => {
-        if (todoTitle.style.textDecoration === "line-through") {
-          todoTitle.style.textDecoration = "none";
-        } else {
-          todoTitle.style.textDecoration = "line-through";
-        }
-      });
-
-      const deleteTodo = document.createElement("img");
-      deleteTodo.src = "./assets/delete.png";
-      deleteTodo.style.width = "20px";
-      deleteTodo.addEventListener("click", () => {
-        todosInStorage.splice(i, 1);
-
-        todoContainer.remove(); // Remove the todo container from the DOM
-      });
-
-      const updateTodo = document.createElement("img");
-      updateTodo.src = "./assets/refresh.png";
-      updateTodo.style.width = "25px";
-      updateTodo.addEventListener("click", (event) => {
-        showUpdateTaskButton();
-        showForm(event);
-
-        const todoPropertiesUpdate = todoProperty();
-
-        document
-          .getElementById("update-task")
-          .addEventListener("click", (event) => {
-            event.preventDefault();
-
-            todo.updateProperties(
-              todoPropertiesUpdate.title.value,
-              todoPropertiesUpdate.description.value,
-              todoPropertiesUpdate.dueDate.value,
-              todoPropertiesUpdate.priority.value
-            );
-            toggleForm();
-            form.reset();
-          });
-      });
-
-      todoContainer.append(todoComplete, todoTitle, deleteTodo, updateTodo);
-      projectsContainerElement.append(todoContainer);
+      projectsContainerElement.append(todoElementsFromFunc);
     }
   }
   projectsContainerElement.append(addTodoButton);

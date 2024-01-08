@@ -9,16 +9,38 @@ export class Todo {
   }
 
   // method to toggle completion state
-  updateProperties(newTitle, newDescription, newDueDate, newPriority) {
+  updateProperties(
+    newTitle,
+    newDescription,
+    newDueDate,
+    newPriority,
+    newProject
+  ) {
     this.title = newTitle;
     this.description = newDescription;
     this.dueDate = newDueDate;
     this.priority = newPriority;
+    this.project = newProject;
+    this.completed = false;
   }
 
-  toggleCompleted(name) {
+  toggleCompleted() {
     this.completed = !this.completed;
-    this.name = name;
+  }
+
+  // Static method to create a Todo instance from an object
+  static fromObject(todoObject) {
+    const todo = new Todo(
+      todoObject.title,
+      todoObject.description,
+      todoObject.dueDate,
+      todoObject.priority,
+      todoObject.project
+    );
+
+    todo.completed = todoObject.completed;
+
+    return todo;
   }
 }
 
@@ -29,7 +51,14 @@ export const setTodosInLocalStorage = (todos) => {
 
 // Function to get todos from local storage
 const getTodosFromLocalStorage = () => {
-  return JSON.parse(localStorage.getItem("todos")) || [];
+  const todoObjects = JSON.parse(localStorage.getItem("todos")) || [];
+  const todos = [];
+
+  for (let i = 0; i < todoObjects.length; i++) {
+    todos.push(Todo.fromObject(todoObjects[i]));
+  }
+
+  return todos;
 };
 
 export class TodoList {
