@@ -149,8 +149,6 @@ const todosFunction = () => {
   inboxHeading.textContent = "Inbox";
   activeContainer.append(inboxHeading);
 
-  //   todosInStorage = setTodosInLocalStorage();
-
   for (let i = 0; i < todosInStorage.length; i++) {
     const todo = todosInStorage[i];
 
@@ -370,6 +368,7 @@ const todayTodos = () => {
     }
   }
 };
+
 // Calls the todayTodos function when the today tab is active
 const todayTodoContainer = document.getElementById("today-container");
 todayTodoContainer.addEventListener("click", () => {
@@ -404,7 +403,6 @@ addProjectButton.addEventListener("click", () => {
   cancelProjectName.style.display = "block";
 });
 
-// Function to display a project name when the add button is clicked
 const displayProjectName = () => {
   const projectsContainer = document.getElementById("projects-container");
 
@@ -412,16 +410,93 @@ const displayProjectName = () => {
   const projectName = projectNameInput.value;
 
   if (projectName) {
+    // Retrieve existing projects from localStorage
+    const storedProjectsString = localStorage.getItem("projects");
+    const storedProjects = JSON.parse(storedProjectsString) || [];
+
+    // Check if the project name already exists
+    const projectExists = storedProjects.some(
+      (project) => project === projectName
+    );
+
+    if (!projectExists) {
+      // Add the new project to the stored projects
+      storedProjects.push(projectName);
+
+      // Update the projects in localStorage
+      localStorage.setItem("projects", JSON.stringify(storedProjects));
+
+      // Clear existing content in projectsContainer
+      projectsContainer.innerHTML = "";
+
+      storedProjects.forEach((currentValue, index, array) => {
+        const newProjectContainer = document.createElement("div");
+        newProjectContainer.classList.add("project-container");
+
+        const newProjectName = document.createElement("p");
+        newProjectName.textContent = currentValue;
+
+        newProjectContainer.addEventListener("click", () => {
+          currentProject = projectName;
+          projectTodos(currentProject);
+        });
+
+        const deleteProject = document.createElement("img");
+        deleteProject.src = "./assets/delete.png";
+        deleteProject.style.width = "20px";
+
+        deleteProject.addEventListener("click", (event) => {
+          newProjectContainer.remove();
+
+          // Remove the project from stored projects
+          const updatedProjects = storedProjects.filter(
+            (project) => project !== currentValue
+          );
+          localStorage.setItem("projects", JSON.stringify(updatedProjects));
+
+          // Remove todos related to the deleted project
+          for (let i = 0; i < todosInStorage.length; i++) {
+            const todo = todosInStorage[i];
+            if (todo.project === currentValue) {
+              todosInStorage.splice(i, 1);
+            }
+          }
+          event.stopPropagation();
+          todosFunction();
+        });
+
+        newProjectContainer.append(newProjectName, deleteProject);
+        projectsContainer.append(newProjectContainer);
+      });
+
+      // Reset the input and turn the display of it and the submit button off after adding
+      projectNameInput.value = "";
+      projectNameInput.style.display = "none";
+      submitProjectName.style.display = "none";
+      cancelProjectName.style.display = "none";
+    } else {
+      alert("Project with the same name already exists!");
+    }
+  }
+};
+
+// Function to display projects from local storage on page load
+const displayStoredProjects = () => {
+  const projectsContainer = document.getElementById("projects-container");
+
+  // Retrieve existing projects from localStorage
+  const storedProjectsString = localStorage.getItem("projects");
+  const storedProjects = JSON.parse(storedProjectsString) || [];
+
+  storedProjects.forEach((currentValue, index, array) => {
     const newProjectContainer = document.createElement("div");
     newProjectContainer.classList.add("project-container");
 
     const newProjectName = document.createElement("p");
-    newProjectName.textContent = projectName;
+    newProjectName.textContent = currentValue;
 
-    // Add event listener to display todos when the project is clicked
     newProjectContainer.addEventListener("click", () => {
       currentProject = projectName;
-
       projectTodos(currentProject);
     });
 
@@ -432,9 +507,16 @@ const displayProjectName = () => {
     deleteProject.addEventListener("click", (event) => {
       newProjectContainer.remove();
 
+      // Remove the project from stored projects
+      const updatedProjects = storedProjects.filter(
+        (project) => project !== currentValue
+      );
+      localStorage.setItem("projects", JSON.stringify(updatedProjects));
+
+      // Remove todos related to the deleted project
       for (let i = 0; i < todosInStorage.length; i++) {
         const todo = todosInStorage[i];
-        if (todo.project === projectName) {
+        if (todo.project === currentValue) {
           todosInStorage.splice(i, 1);
         }
       }
@@ -444,14 +526,11 @@ const displayProjectName = () => {
 
     newProjectContainer.append(newProjectName, deleteProject);
     projectsContainer.append(newProjectContainer);
-
-    // Reset the input and turn the display of it and the submit button off after adding
-    projectNameInput.value = "";
-    projectNameInput.style.display = "none";
-    submitProjectName.style.display = "none";
-    cancelProjectName.style.display = "none";
-  }
+  });
 };
+
+// Call the function to display stored projects on page load
+displayStoredProjects();
 
 //Event listener to the submit project name button that calls the display project name function
 const submitProjectName = document.getElementById("submit-project-name");
@@ -487,8 +566,6 @@ const projectTodos = (projectName) => {
   projectHeading.id = "project-todos-heading";
   projectHeading.textContent = projectName;
   activeContainer.append(projectHeading);
-
-  //   todosInStorage = setTodosInLocalStorage();
 
   for (let i = 0; i < todosInStorage.length; i++) {
     const todo = todosInStorage[i];
