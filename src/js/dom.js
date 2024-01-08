@@ -437,7 +437,7 @@ const displayProjectName = () => {
         newProjectName.textContent = currentValue;
 
         newProjectContainer.addEventListener("click", () => {
-          currentProject = projectName;
+          currentProject = currentValue;
           projectTodos(currentProject);
         });
 
@@ -496,7 +496,7 @@ const displayStoredProjects = () => {
     newProjectName.textContent = currentValue;
 
     newProjectContainer.addEventListener("click", () => {
-      //   currentProject = projectName;
+      currentProject = currentValue;
       projectTodos(currentProject);
     });
 
