@@ -18,26 +18,41 @@ const todoProperty = () => {
   return { title, description, dueDate, priority };
 };
 
+const setTodosInLocalStorage = () => {
+  let todos = JSON.parse(localStorage.getItem("todos")) || [];
+  return todos;
+};
+
+let todosInStorage = setTodosInLocalStorage();
+
+function updateLocalStorage() {
+  localStorage.setItem("todos", JSON.stringify(todosInStorage));
+}
+
 let currentProject = "Inbox";
 
-// Creates a todo by calling the todoList.createTodoForInbox method to create todos for the inbox
+// Creates a todo by calling the todoList.createTodo method to create todos
 const createTodo = (currentProject) => {
   const todoProperties = todoProperty();
 
   if (currentProject === "Inbox") {
-    todoList.createTodo(
+    const newTodo = todoList.createTodo(
       todoProperties.title.value,
       todoProperties.description.value,
       todoProperties.dueDate.value,
       todoProperties.priority.value,
       currentProject
     );
+    todosInStorage.push(newTodo);
+
+    updateLocalStorage();
+
+    todosFunction();
 
     // Runs the todosFunction everytime a new todo is created
-    todosFunction();
   } else {
     // Handle project-specific todos if needed
-    todoList.createTodo(
+    const newTodo = todoList.createTodo(
       todoProperties.title.value,
       todoProperties.description.value,
       todoProperties.dueDate.value,
@@ -45,6 +60,11 @@ const createTodo = (currentProject) => {
       currentProject
     );
 
+    todosInStorage.push(newTodo);
+
+    updateLocalStorage();
+
+    //Runs projectTodos for a particular project apart from inbox
     projectTodos(currentProject);
   }
 };
@@ -129,8 +149,10 @@ const todosFunction = () => {
   inboxHeading.textContent = "Inbox";
   activeContainer.append(inboxHeading);
 
-  for (let i = 0; i < todoList.todos.length; i++) {
-    const todo = todoList.todos[i];
+  //   todosInStorage = setTodosInLocalStorage();
+
+  for (let i = 0; i < todosInStorage.length; i++) {
+    const todo = todosInStorage[i];
 
     if (todo.project === "Inbox") {
       const todoContainer = document.createElement("div"); // Container for each todo
@@ -158,7 +180,9 @@ const todosFunction = () => {
       deleteTodo.src = "./assets/delete.png";
       deleteTodo.style.width = "20px";
       deleteTodo.addEventListener("click", () => {
-        todoList.todos.splice(i, 1);
+        todosInStorage.splice(i, 1);
+
+        updateLocalStorage();
         todoContainer.remove(); // Remove the todo container from the DOM
       });
 
@@ -194,6 +218,8 @@ const todosFunction = () => {
   todosInInbox.append(addTodoButton);
 };
 
+todosFunction();
+
 // submit button when the add task button is clicked
 
 document.getElementById("submit").addEventListener("click", (event) => {
@@ -202,6 +228,7 @@ document.getElementById("submit").addEventListener("click", (event) => {
   if (!validateForm()) {
     return false;
   }
+
   createTodo(currentProject);
   form.reset();
   toggleForm();
@@ -231,16 +258,16 @@ const toggleTodoDetails = (event, index) => {
     todoDetailContainer.id = `todo-detail-${index}`; // Use an id to identify the container
 
     const todoTitle = document.createElement("p");
-    todoTitle.append(`Title: ${todoList.todos[index].title}`);
+    todoTitle.append(`Title: ${todosInStorage[index].title}`);
 
     const todoDescription = document.createElement("p");
-    todoDescription.append(`Description: ${todoList.todos[index].description}`);
+    todoDescription.append(`Description: ${todosInStorage[index].description}`);
 
     const todoDuedate = document.createElement("p");
-    todoDuedate.append(`Duedate: ${todoList.todos[index].dueDate}`);
+    todoDuedate.append(`Duedate: ${todosInStorage[index].dueDate}`);
 
     const todoPriority = document.createElement("p");
-    todoPriority.append(`Priority: ${todoList.todos[index].priority}`);
+    todoPriority.append(`Priority: ${todosInStorage[index].priority}`);
 
     todoDetailContainer.append(
       todoTitle,
@@ -276,17 +303,19 @@ const todayTodos = () => {
   const today = new Date();
   const todayFormatted = today.toISOString().split("T")[0];
 
-  todoList.todos.forEach((todo, index, array) => {
+  for (let i = 0; i < todosInStorage.length; i++) {
+    const todo = todosInStorage[i];
+
     const todoDueDate = new Date(todo.dueDate).toISOString().split("T")[0];
 
-    if (todoDueDate === todayFormatted && todoList.todos.includes(todo)) {
+    if (todoDueDate === todayFormatted && todosInStorage.includes(todo)) {
       const todoContainer = document.createElement("div");
       todoContainer.classList.add("todo-container");
 
       const todoTitle = document.createElement("p");
       todoTitle.append(todo.title);
       todoTitle.addEventListener("click", (event) => {
-        toggleTodoDetails(event, index);
+        toggleTodoDetails(event, i);
       });
 
       const todoComplete = document.createElement("input");
@@ -305,7 +334,8 @@ const todayTodos = () => {
       deleteTodo.src = "./assets/delete.png";
       deleteTodo.style.width = "20px";
       deleteTodo.addEventListener("click", () => {
-        array.splice(index, 1);
+        todosInStorage.splice(i, 1);
+        updateLocalStorage();
         todoContainer.remove();
         todayTodos();
       });
@@ -324,7 +354,7 @@ const todayTodos = () => {
           .addEventListener("click", (event) => {
             event.preventDefault();
 
-            todoList.todos[index].updateProperties(
+            todo[i].updateProperties(
               todoPropertiesUpdate.title.value,
               todoPropertiesUpdate.description.value,
               todoPropertiesUpdate.dueDate.value,
@@ -338,7 +368,7 @@ const todayTodos = () => {
       todoContainer.append(todoComplete, todoTitle, deleteTodo, updateTodo);
       todoInToday.append(todoContainer);
     }
-  });
+  }
 };
 // Calls the todayTodos function when the today tab is active
 const todayTodoContainer = document.getElementById("today-container");
@@ -402,10 +432,10 @@ const displayProjectName = () => {
     deleteProject.addEventListener("click", (event) => {
       newProjectContainer.remove();
 
-      for (let i = 0; i < todoList.todos.length; i++) {
-        const todo = todoList.todos[i];
+      for (let i = 0; i < todosInStorage.length; i++) {
+        const todo = todosInStorage[i];
         if (todo.project === projectName) {
-          todoList.todos.splice(i, 1);
+          todosInStorage.splice(i, 1);
         }
       }
       event.stopPropagation();
@@ -458,8 +488,10 @@ const projectTodos = (projectName) => {
   projectHeading.textContent = projectName;
   activeContainer.append(projectHeading);
 
-  for (let i = 0; i < todoList.todos.length; i++) {
-    const todo = todoList.todos[i];
+  //   todosInStorage = setTodosInLocalStorage();
+
+  for (let i = 0; i < todosInStorage.length; i++) {
+    const todo = todosInStorage[i];
 
     if (todo.project === projectName) {
       const todoContainer = document.createElement("div"); // Container for each todo
@@ -487,7 +519,8 @@ const projectTodos = (projectName) => {
       deleteTodo.src = "./assets/delete.png";
       deleteTodo.style.width = "20px";
       deleteTodo.addEventListener("click", () => {
-        todoList.todos.splice(i, 1);
+        todosInStorage.splice(i, 1);
+        updateLocalStorage();
         todoContainer.remove(); // Remove the todo container from the DOM
       });
 
