@@ -51,6 +51,34 @@ const createTodo = (currentProject) => {
   }
 };
 
+const updateTodoFunction = (todo, currentProject) => {
+  const todoPropertiesUpdate = todoProperty();
+
+  if (currentProject === "inbox") {
+    todo.updateProperties(
+      todoPropertiesUpdate.title.value,
+      todoPropertiesUpdate.description.value,
+      todoPropertiesUpdate.dueDate.value,
+      todoPropertiesUpdate.priority.value,
+      todo.project
+    );
+
+    setTodosInLocalStorage(todo);
+    todosFunction();
+  } else {
+    todo.updateProperties(
+      todoPropertiesUpdate.title.value,
+      todoPropertiesUpdate.description.value,
+      todoPropertiesUpdate.dueDate.value,
+      todoPropertiesUpdate.priority.value,
+      todo.project
+    );
+
+    setTodosInLocalStorage(todo);
+    projectTodos(currentProject);
+  }
+};
+
 let isFormVisible = false;
 
 // function to toggle the
@@ -165,36 +193,12 @@ const toggleTodoDetails = (event, index) => {
   }
 };
 
-const updateTodoFunction = (todo) => {
-  showUpdateTaskButton();
-  showForm();
-
-  const todoPropertiesUpdate = todoProperty();
-
-  document.getElementById("update-task").addEventListener("click", (event) => {
-    event.preventDefault();
-
-    todo.updateProperties(
-      todoPropertiesUpdate.title.value,
-      todoPropertiesUpdate.description.value,
-      todoPropertiesUpdate.dueDate.value,
-      todoPropertiesUpdate.priority.value,
-      todo.project
-    );
-
-    toggleForm();
-    setTodosInLocalStorage(todoList.todos);
-    if (todo.project === "inbox") {
-      todosFunction();
-    } else {
-      projectTodos(todo.project);
-    }
-  });
-};
+let selectedTodoIndex;
 
 const todoElements = (todo, i) => {
   const todoContainer = document.createElement("div"); // Container for each todo
   todoContainer.classList.add("todo-container"); //  class for styling if needed
+  todoContainer.dataset.index = i;
 
   const todoTitle = document.createElement("p");
   todoTitle.append(todo.title);
@@ -211,9 +215,7 @@ const todoElements = (todo, i) => {
 
   todoComplete.addEventListener("change", () => {
     todo.toggleCompleted(); // Toggle the completion state
-
     updateTodoTitleStyle(todo, todoTitle);
-
     setTodosInLocalStorage(todoList.todos);
   });
 
@@ -229,9 +231,11 @@ const todoElements = (todo, i) => {
   const updateTodo = document.createElement("img");
   updateTodo.src = "./assets/refresh.png";
   updateTodo.style.width = "25px";
-
   updateTodo.addEventListener("click", () => {
-    updateTodoFunction(todo);
+    showUpdateTaskButton();
+    showForm();
+
+    selectedTodoIndex = event.currentTarget.parentElement.dataset.index;
   });
 
   todoContainer.append(todoComplete, todoTitle, deleteTodo, updateTodo);
@@ -269,9 +273,6 @@ const todosFunction = () => {
   todosInInbox.append(addTodoButton);
 };
 
-// Calling the todos function to render existing todos on page load
-todosFunction();
-
 // submit button when the add task button is clicked
 document.getElementById("submit").addEventListener("click", (event) => {
   event.preventDefault();
@@ -279,6 +280,23 @@ document.getElementById("submit").addEventListener("click", (event) => {
     return false;
   }
   createTodo(currentProject);
+  form.reset();
+  toggleForm();
+});
+
+document.getElementById("update-task").addEventListener("click", (event) => {
+  event.preventDefault();
+
+  if (!validateForm()) {
+    return false;
+  }
+
+  // Use the stored index to call updateTodoFunction
+  if (selectedTodoIndex !== undefined) {
+    const todo = todoList.todos[selectedTodoIndex];
+    updateTodoFunction(todo, currentProject);
+  }
+
   form.reset();
   toggleForm();
 });
@@ -313,7 +331,6 @@ const todayTodos = () => {
       const todoElementsFromFunc = todoElements(todo, i);
       todoInToday.append(todoElementsFromFunc);
     }
-    return;
   }
 };
 
@@ -328,6 +345,7 @@ const inboxTodoContainer = document.getElementById("inbox-container");
 inboxTodoContainer.addEventListener("click", () => {
   currentProject = "Inbox";
   todosFunction();
+  console.log(currentProject);
 });
 
 //Projects section of the app code starts here
@@ -379,9 +397,9 @@ const displayProjectName = () => {
         newProjectName.textContent = currentValue;
 
         newProjectContainer.addEventListener("click", () => {
-          form.reset();
           currentProject = currentValue;
           projectTodos(currentProject);
+          console.log(currentProject);
         });
 
         const deleteProject = document.createElement("img");
@@ -441,9 +459,9 @@ const displayStoredProjects = () => {
     newProjectName.textContent = currentValue;
 
     newProjectContainer.addEventListener("click", () => {
-      form.reset();
       currentProject = currentValue;
-      projectTodos(currentProject);
+      projectTodos(currentValue);
+      console.log(currentProject);
     });
 
     const deleteProject = document.createElement("img");
@@ -520,9 +538,11 @@ const projectTodos = (projectName) => {
 
     if (todo.project === projectName) {
       const todoElementsFromFunc = todoElements(todo, i);
-
       projectsContainerElement.append(todoElementsFromFunc);
     }
   }
   projectsContainerElement.append(addTodoButton);
 };
+
+// Calling the todos function to render existing todos on page load
+todosFunction();
