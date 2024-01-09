@@ -343,7 +343,6 @@ const inboxTodoContainer = document.getElementById("inbox-container");
 inboxTodoContainer.addEventListener("click", () => {
   currentProject = "Inbox";
   todosFunction();
-  console.log(currentProject);
 });
 
 //Projects section of the app code starts here
@@ -459,7 +458,6 @@ const displayStoredProjects = () => {
     newProjectContainer.addEventListener("click", () => {
       currentProject = currentValue;
       projectTodos(currentValue);
-      console.log(currentProject);
     });
 
     const deleteProject = document.createElement("img");
