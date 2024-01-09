@@ -226,6 +226,7 @@ const todoElements = (todo, i) => {
     todoList.todos.splice(i, 1);
     setTodosInLocalStorage(todoList.todos);
     todoContainer.remove(); // Remove the todo container from the DOM
+    todosFunction();
   });
 
   const updateTodo = document.createElement("img");
