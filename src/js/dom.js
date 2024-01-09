@@ -290,14 +290,11 @@ document.getElementById("update-task").addEventListener("click", (event) => {
   if (!validateForm()) {
     return false;
   }
-
   // Use the stored index to call updateTodoFunction
   if (selectedTodoIndex !== undefined) {
     const todo = todoList.todos[selectedTodoIndex];
     updateTodoFunction(todo, currentProject);
   }
-
-  form.reset();
   toggleForm();
 });
 
