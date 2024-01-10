@@ -304,6 +304,12 @@ form select {
   gap: 0.5vw;
 }
 
+.todo-container input,
+.todo-container p,
+.todo-container img {
+  margin: 0 auto;
+}
+
 .todo-container.active {
   display: grid;
   grid-template-columns: 5fr 75fr 5fr 5fr;
