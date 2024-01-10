@@ -230,11 +230,6 @@ nav {
   justify-content: space-between;
 }
 
-#projects-container {
-  height: 30vh;
-  overflow-y: scroll;
-}
-
 #todos-in-inbox {
   overflow-y: scroll;
   max-height: 60vh;
@@ -282,19 +277,22 @@ nav {
 }
 
 form {
+  overflow: hidden;
   background-color: #f2f3f5;
   margin: auto auto;
-  padding: 1.5rem;
+  padding: 2dvw;
   display: flex;
   flex-direction: column;
-  border-radius: 10px;
+  border-radius: 0.5rem;
+
+  width: 80vw;
 }
 
 form input,
 form textarea,
 form select {
-  margin: 10px;
-  padding: 10px;
+  margin: 0.5rem;
+  padding: 0.8rem;
 }
 
 .todo-container {
