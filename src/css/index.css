@@ -284,7 +284,6 @@ form {
   display: flex;
   flex-direction: column;
   border-radius: 0.5rem;
-
   width: 80vw;
 }
 
@@ -298,23 +297,24 @@ form select {
 .todo-container {
   display: grid;
   justify-content: center;
-  grid-template-columns: 5% 75% 5% 5%;
+  grid-template-columns: 5fr 75fr 5fr 5fr;
   padding: 0.8rem;
   margin: 20px;
   border: 2px solid #374958;
+  gap: 0.5vw;
 }
 
 .todo-container.active {
   display: grid;
-  grid-template-columns: 5% 75% 5% 5%;
+  grid-template-columns: 5fr 75fr 5fr 5fr;
   grid-template-rows: 20px 1fr;
-  padding: 10px;
+  padding: 3vw;
   justify-content: center;
   border: 2px solid #374958;
 }
 
 .todo-detail-container {
-  grid-column: 1/4;
+  grid-column: 1/5;
   display: flex;
   justify-content: space-around;
   align-items: center;
