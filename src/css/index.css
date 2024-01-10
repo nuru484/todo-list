@@ -45,8 +45,7 @@ nav {
 /* Media query for smaller screens */
 @media (max-width: 1200px) {
   #container {
-    grid-template-columns: 1fr; /* Set to one column on smaller screens */
-    /* grid-template-rows: repeat(4, auto); */
+    grid-template-columns: 1fr;
   }
 
   header {
@@ -86,7 +85,6 @@ nav {
 
 #logo-container img {
   width: clamp(1.5rem, 2.5vw, 3rem);
-  /* width: 2.5vw; */
 }
 
 #logo-container:hover,
@@ -230,11 +228,6 @@ nav {
   justify-content: space-between;
 }
 
-#todos-in-inbox {
-  overflow-y: scroll;
-  max-height: 60vh;
-}
-
 #active-container {
   background-color: #2abd67;
   height: 5rem;
@@ -307,7 +300,7 @@ form select {
 .todo-container input,
 .todo-container p,
 .todo-container img {
-  margin: 0 auto;
+  margin: auto 0.3rem;
 }
 
 .todo-container.active {
@@ -322,12 +315,11 @@ form select {
 .todo-detail-container {
   grid-column: 1/5;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 0.5rem;
   border: 2px solid white;
-  padding: 10px;
-  margin-top: 10px;
+  padding: 0.8rem;
+  margin-top: 0.8rem;
   background-color: #ececec;
 }
 
