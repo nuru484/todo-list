@@ -40,8 +40,12 @@ This is a solution to the [Todo List project in The Odin Project curriculum](htt
 
 ### Screenshot
 
-![Desktop-view-of-app](./assets/weather-app-desktop-view.png)
+![Desktop-view-of-app](./assets/desktop-view.png)
 
 <div align="center">
   <img src="./assets/weather-app-mobile-view.png" alt="mobile-view-of-app" width="300">
+</div>
+
+<div align="center">
+  <img src="./assets/mobile-view.png" alt="mobile-view-of-app" width="300">
 </div>
