@@ -71,3 +71,15 @@ This is a solution to the [Todo List project in The Odin Project curriculum](htt
 - ![Git](https://img.shields.io/badge/Git-%23F05032.svg?style=for-the-badge&logo=git&logoColor=white)
 - ![Webpack](https://img.shields.io/badge/Webpack-%238DD6F9.svg?style=for-the-badge&logo=webpack&logoColor=white)
 - ![npm](https://img.shields.io/badge/npm-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
+
+### Features
+
+- Todo Creation: Easily add new tasks with titles, descriptions, due dates, priorities, notes, and checklists.
+- Project Organization: Categorize todos into different projects for better management.
+- Project Management: Create, edit, and delete projects for flexible task structuring.
+- Todo Viewing: See all todos within a project, displaying titles, due dates, and priorities.
+- Todo Details: Expand todos to modify details like title, description, due date, and priority.
+- Todo Deletion: Remove unwanted todos to keep the list clean and updated.
+- Persistence: Save projects and todos using localStorage for data retention.
+- User Interface: Enjoy a user-friendly interface for easy navigation and interaction.
+- Responsiveness: Experience consistent usability across devices with responsive design.
