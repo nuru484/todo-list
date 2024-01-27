@@ -93,3 +93,12 @@ This is a solution to the [Todo List project in The Odin Project curriculum](htt
 - Local Storage: Utilized localStorage API for persisting projects and todos locally within the browser, understanding data storage concepts in web applications.
 - User Interface Design: Gained insights into UI design principles to create intuitive interfaces for seamless navigation and interaction.
 - Responsive Web Design: Explored techniques for building responsive layouts, ensuring optimal user experience across various devices and screen sizes.
+
+### Continued development
+
+- Sorting: Add sorting options for todos, such as by due date or priority, to enhance organization.
+- Filtering: Introduce filtering capabilities to easily locate specific todos based on criteria like status or priority.
+- Undo/Redo: Implement undo and redo functionalities to allow users to revert or repeat actions.
+- Notifications: Integrate notification features to remind users of approaching due dates or important tasks.
+- Collaboration: Enable collaboration features, such as sharing projects or assigning tasks to team members.
+- Customization: Provide options for customizing the app's theme or layout to suit individual preferences.
