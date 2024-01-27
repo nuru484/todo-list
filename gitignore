@@ -1,1 +1,5 @@
-node_modules
+# Ignore everything in the root directory
+/*
+
+# Except the dist folder
+!/dist/
