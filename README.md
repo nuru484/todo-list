@@ -37,3 +37,11 @@ This is a solution to the [Todo List project in The Odin Project curriculum](htt
 - Add persistence to the app using the Web Storage API, specifically localStorage.
 - Ensure the app handles cases where data from localStorage may not be present.
 - Store and retrieve data in JSON format, and handle methods associated with objects.
+
+### Screenshot
+
+![Desktop-view-of-app](./assets/weather-app-desktop-view.png)
+
+<div align="center">
+  <img src="./assets/weather-app-mobile-view.png" alt="mobile-view-of-app" width="300">
+</div>
