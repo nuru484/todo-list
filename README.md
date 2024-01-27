@@ -49,3 +49,8 @@ This is a solution to the [Todo List project in The Odin Project curriculum](htt
 <div align="center">
   <img src="./assets/mobile-view2.png" alt="mobile-view-of-app" width="300">
 </div>
+
+### Links
+
+- Source code URL: https://github.com/nuru484/todo-list
+- Live Site URL: https://nuru484.github.io/todo-list/
