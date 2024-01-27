@@ -110,11 +110,5 @@ This is a solution to the [Todo List project in The Odin Project curriculum](htt
 
 ## Author
 
-- Twitter - [@ABDULMAJEEDNUR3](https://twitter.com/ABDULMAJEEDNUR3)
-- GitHub - [@Nuru484](https://github.com/nuru484)
-
-## Acknowledgments
-
-- Inspiration by [The Odin Project](https://www.theodinproject.com/)
-
-All praised to Allah.
+- Twitter - [Nurudeen Abdul-Majeed](https://twitter.com/ABDULMAJEEDNUR3)
+- Linkedin - [Nurudeen Abdul-Majeed](https://www.linkedin.com/in/abdul-majeed-nurudeen-78266a182/)
