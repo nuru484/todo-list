@@ -83,3 +83,13 @@ This is a solution to the [Todo List project in The Odin Project curriculum](htt
 - Persistence: Save projects and todos using localStorage for data retention.
 - User Interface: Enjoy a user-friendly interface for easy navigation and interaction.
 - Responsiveness: Experience consistent usability across devices with responsive design.
+
+### What I learned
+
+- Form Handling: Managed user input via forms for task creation.
+- Data Structures: Implemented data structures for organizing todos into projects, enabling efficient management and retrieval of tasks.
+  -CRUD Operations: Practiced implementing CRUD (Create, Read, Update, Delete) operations for both projects and todos, gaining proficiency in data manipulation.
+- Event Handling: Learned event handling techniques to enable interactive features such as expanding todos for detailed editing and deleting tasks.
+- Local Storage: Utilized localStorage API for persisting projects and todos locally within the browser, understanding data storage concepts in web applications.
+- User Interface Design: Gained insights into UI design principles to create intuitive interfaces for seamless navigation and interaction.
+- Responsive Web Design: Explored techniques for building responsive layouts, ensuring optimal user experience across various devices and screen sizes.
