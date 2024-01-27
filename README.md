@@ -102,3 +102,19 @@ This is a solution to the [Todo List project in The Odin Project curriculum](htt
 - Notifications: Integrate notification features to remind users of approaching due dates or important tasks.
 - Collaboration: Enable collaboration features, such as sharing projects or assigning tasks to team members.
 - Customization: Provide options for customizing the app's theme or layout to suit individual preferences.
+
+### Useful resources
+
+- [OpenAI](https://chat.openai.com/?model=text-davinci-002-render-sha) - ChatGPT streamlines my workflow by handling repetitive tasks and offering solutions that save time and effort. It effectively minimizes the need for me to perform certain actions repeatedly, thereby optimizing productivity and allowing me to focus on more critical aspects of development.
+- [Flaticon](https://www.flaticon.com/) - "I utilize Flaticon for sourcing icons used in my project.
+
+## Author
+
+- Twitter - [@ABDULMAJEEDNUR3](https://twitter.com/ABDULMAJEEDNUR3)
+- GitHub - [@Nuru484](https://github.com/nuru484)
+
+## Acknowledgments
+
+- Inspiration by [The Odin Project](https://www.theodinproject.com/)
+
+All praised to Allah.
