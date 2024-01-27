@@ -112,3 +112,9 @@ This is a solution to the [Todo List project in The Odin Project curriculum](htt
 
 - Twitter - [Nurudeen Abdul-Majeed](https://twitter.com/ABDULMAJEEDNUR3)
 - Linkedin - [Nurudeen Abdul-Majeed](https://www.linkedin.com/in/abdul-majeed-nurudeen-78266a182/)
+
+## Acknowledgments
+
+- Inspiration by [The Odin Project](https://www.theodinproject.com/)
+
+All praised to Allah.
